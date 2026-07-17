@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>数字资产储备公司仪表盘 - 每日更新</title>
+<style>
+:root{--bg:#0f1117;--surface:#1a1d27;--border:#2a2d3a;--text:#e4e4e7;--text-dim:#9ca3af;--accent:#6366f1;--green:#22c55e;--red:#ef4444;--yellow:#eab308;--orange:#f97316}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,monospace;background:var(--bg);color:var(--text);line-height:1.6;padding:20px}
+.container{max-width:1400px;margin:0 auto}
+h1{font-size:1.8rem;margin-bottom:4px}h2{font-size:1.3rem;margin:24px 0 12px;color:var(--accent);border-bottom:1px solid var(--border);padding-bottom:6px}h3{font-size:1.1rem;margin:16px 0 8px}
+.subtitle{color:var(--text-dim);font-size:.9rem;margin-bottom:8px}
+.status-bar{display:flex;align-items:center;gap:12px;padding:8px 14px;background:var(--surface);border:1px solid var(--border);border-radius:8px;margin:12px 0;font-size:.85rem}
+.status-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+.status-dot.stale{background:var(--orange);animation:none}
+.status-dot.error{background:var(--red);animation:none}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.disclaimer{background:#1c1408;border:1px solid #854d0e;border-radius:8px;padding:12px 16px;margin:16px 0;font-size:.85rem;color:#fbbf24}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:16px 0}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px}
+.card-title{font-size:.8rem;color:var(--text-dim);margin-bottom:4px}
+.card-value{font-size:1.4rem;font-weight:700}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.filter-btn{background:var(--surface);border:1px solid var(--border);color:var(--text);padding:6px 14px;border-radius:6px;cursor:pointer;font-size:.85rem;transition:all .2s}
+.filter-btn:hover,.filter-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+table{width:100%;border-collapse:collapse;font-size:.8rem;margin:12px 0}
+th{background:var(--surface);padding:10px 8px;text-align:left;border-bottom:2px solid var(--border);cursor:pointer;user-select:none;white-space:nowrap;position:sticky;top:0;z-index:10}
+th:hover{color:var(--accent)}td{padding:8px;border-bottom:1px solid var(--border);vertical-align:top}
+tr:hover{background:rgba(99,102,241,.05)}
+.risk-low{color:var(--green)}.risk-medium{color:var(--yellow)}.risk-high{color:var(--orange)}.risk-critical{color:var(--red)}
+.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.75rem;font-weight:600}
+.badge-btc{background:#f59e0b20;color:#f59e0b}.badge-eth{background:#6366f120;color:#8b8ff5}.badge-sol{background:#9333ea20;color:#a855f7}
+.pnl-pos{color:var(--green)}.pnl-neg{color:var(--red)}
+.bar-chart{margin:16px 0}
+.bar-row{display:flex;align-items:center;margin:4px 0;gap:8px}
+.bar-label{width:120px;font-size:.78rem;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-track{flex:1;height:20px;background:var(--surface);border-radius:4px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;display:flex;align-items:center;padding-left:6px;font-size:.68rem;color:#fff;font-weight:600}
+.bar-value{margin-left:8px;font-size:.73rem;color:var(--text-dim);white-space:nowrap}
+.vulnerable-card{background:linear-gradient(135deg,#1a0505,#1f1015);border:1px solid #7f1d1d;border-radius:8px;padding:14px;margin:8px 0}
+.vulnerable-card h4{color:var(--red);margin-bottom:4px;font-size:.95rem}
+.vulnerable-card .reason{color:var(--text-dim);font-size:.83rem}
+.loading{text-align:center;padding:60px;color:var(--text-dim)}
+.error-state{text-align:center;padding:40px;color:var(--red);background:var(--surface);border-radius:8px;margin:20px 0}
+.meta{color:var(--text-dim);font-size:.78rem;margin-top:24px;border-top:1px solid var(--border);padding-top:12px}
+.change-sell{background:rgba(239,68,68,.08)}.change-buy{background:rgba(34,197,94,.08)}
+.change-log-table{width:100%;border-collapse:collapse;font-size:.8rem;margin:12px 0}
+.change-log-table th{background:var(--surface);padding:8px;text-align:left;border-bottom:2px solid var(--border)}
+.change-log-table td{padding:8px;border-bottom:1px solid var(--border)}
+.empty-state{text-align:center;padding:40px;color:var(--text-dim);font-size:.9rem}
+th[title],td[title]{position:relative}
+th[title]:hover::after{content:attr(title);position:absolute;left:0;top:100%;background:#1e2030;border:1px solid var(--border);border-radius:6px;padding:8px 12px;font-size:.78rem;font-weight:400;color:var(--text);white-space:pre-wrap;width:260px;z-index:100;box-shadow:0 4px 12px rgba(0,0,0,.4);line-height:1.5}
+.formula-box{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin:8px 0 16px;font-size:.85rem;line-height:1.7}
+.formula-box code{background:#2a2d3a;padding:2px 6px;border-radius:4px;font-size:.82rem;color:#a5b4fc}
+.formula-box .formula-title{font-weight:700;color:var(--accent);margin-bottom:6px}
+.source-tag{display:inline-block;font-size:.68rem;color:var(--text-dim);background:#1e2030;border:1px solid var(--border);border-radius:3px;padding:1px 5px;margin-left:4px;vertical-align:middle}
+@media(max-width:900px){.grid-3{grid-template-columns:1fr}table{font-size:.73rem}.bar-label{width:80px}}
+</style>
+<script id="inline-data">window.__INLINE_DATA__={"generatedAt":"2026-07-17T11:02:38.374Z","dataFetchedAt":"2026-07-17T11:02:38.368Z","prices":{"btc":63140,"eth":1836,"sol":74.75},"circulatingSupply":{"btc":20999875.55998009,"eth":120686843.75653629,"sol":582561728.3950617},"marketData":{"btc":{"marketCap":1266360616793.2993,"volume24h":24960678520.52638},"eth":{"marketCap":221579963881.5956,"volume24h":9854254739.718822},"sol":{"marketCap":43540021605.36929,"volume24h":1520464807.8296657}},"companies":[{"name":"Strategy (MicroStrategy)","symbol":"MSTR.US","country":"US","primaryCoin":"BTC","holdings":{"btc":{"quantity":843775,"entryValueUsd":63684761900,"currentValueUsd":53275953500,"avgCost":75476,"percentOfCirculating":4.018,"unrealizedUsd":-10408808400,"unrealizedPct":-16.344268376702527}},"totalCurrentValueUsd":53275953500,"totalEntryValueUsd":63684761900,"totalUnrealizedPnlUsd":-10408808400,"totalUnrealizedPnlPct":-16.344268376702527,"debt":{"totalDebtUsd":6713750000,"convertibleNotesUsd":6713750000,"otherDebtUsd":0,"hasLeverage":true,"notes":[{"title":"Convert 2028","notional":1010000000,"maturity":"2028-09-16","coupon":0.625,"strikePrice":183.19},{"title":"Convert 2029","notional":1500000000,"maturity":"2029-12-02","coupon":0,"strikePrice":672.4},{"title":"Convert 2030 A","notional":800000000,"maturity":"2030-03-16","coupon":0.625,"strikePrice":149.77},{"title":"Convert 2030 B","notional":2000000000,"maturity":"2030-03-02","coupon":0,"strikePrice":433.43},{"title":"Convert 2031","notional":603750000,"maturity":"2031-03-16","coupon":0.875,"strikePrice":232.72},{"title":"Convert 2032","notional":800000000,"maturity":"2032-06-16","coupon":2.25,"strikePrice":204.33}],"source":"https://www.strategy.com/debt (live data, updated 2026-07-16)","asOfDate":"2026-07-16"},"bankruptcy":{"bankruptcyPrice":7956.801279962076,"bufferPct":87.39816078561596,"currentPrice":63140,"coin":"btc"},"liquidityRisk":{"daysToExit":213.4111827010933,"level":3,"label":"> 30 days"},"sellability":"restricted","lockStatus":"free","mnavPremium":2.1,"risk":{"total":9,"level":"high","breakdown":{"leverage":1,"concentration":3,"liquidity":3,"reflexivity":2}},"notes":"Largest corporate BTC holder. Convertible notes are equity-settled (no forced BTC liquidation), but bankruptcy still possible if stock crashes and refinancing fails.","recentChange":null},{"name":"BitMine Immersion","symbol":"BMNR.US","country":"US","primaryCoin":"ETH","holdings":{"btc":{"quantity":198,"entryValueUsd":0,"currentValueUsd":12501720,"avgCost":null,"percentOfCirculating":0.001,"unrealizedUsd":null,"unrealizedPct":null},"eth":{"quantity":5770038,"entryValueUsd":0,"currentValueUsd":10593789768,"avgCost":null,"percentOfCirculating":4.781,"unrealizedUsd":null,"unrealizedPct":null}},"totalCurrentValueUsd":10606291488,"totalEntryValueUsd":null,"totalUnrealizedPnlUsd":null,"totalUnrealizedPnlPct":null,"debt":{"totalDebtUsd":null,"convertibleNotesUsd":null,"otherDebtUsd":null,"hasLeverage":false,"notes":[],"source":"Limited public disclosures. Micro-cap company.","asOfDate":"2025-Q1"},"bankruptcy":{"bankruptcyPrice":null,"bufferPct":null,"reason":"No leverage / no forced liquidation price"},"liquidityRisk":{"daysToExit":107.48415054964153,"level":3,"label":"> 30 days"},"sellability":"restricted","lockStatus":"restricted","mnavPremium":null,"risk":{"total":6,"level":"medium","breakdown":{"leverage":0,"concentration":2,"liquidity":3,"reflexivity":1}},"notes":"Extremely large reported ETH position (4.8% of circulating supply) - data may include custodied/client assets. Verify independently.","recentChange":null},{"name":"Twenty One Capital","symbol":"XXI.US","country":"US","primaryCoin":"BTC","holdings":{"btc":{"quantity":43514,"entryValueUsd":0,"currentValueUsd":2747473960,"avgCost":null,"percentOfCirculating":0.207,"unrealizedUsd":null,"unrealizedPct":null}},"totalCurrentValueUsd":2747473960,"totalEntryValueUsd":null,"totalUnrealizedPnlUsd":null,"totalUnrealizedPnlPct":null,"debt":{"totalDebtUsd":null,"convertibleNotesUsd":null,"otherDebtUsd":null,"hasLeverage":false,"notes":[],"source":"New entity (2025 SPAC merger via Cantor Equity Partners). Limited public debt disclosures.","asOfDate":"2025-Q4"},"bankruptcy":{"bankruptcyPrice":null,"bufferPct":null,"reason":"No leverage / no forced liquidation price"},"liquidityRisk":{"daysToExit":11.005747034523866,"level":2,"label":"7-30 days"},"sellability":"restricted","lockStatus":"free","mnavPremium":null,"risk":{"total":6,"level":"medium","breakdown":{"leverage":0,"concentration":3,"liquidity":2,"reflexivity":1}},"notes":"Backed by Tether, SoftBank, Bitfinex. Primarily equity-funded. Launched with ~31,500 BTC at inception.","recentChange":null},{"name":"Metaplanet","symbol":"3350.T","country":"JP","primaryCoin":"BTC","holdings":{"btc":{"quantity":43000,"entryValueUsd":3810765023.48,"currentValueUsd":2715020000,"avgCost":88622.44240651163,"percentOfCirculating":0.205,"unrealizedUsd":-1095745023.48,"unrealizedPct":-28.753938296603838}},"totalCurrentValueUsd":2715020000,"totalEntryValueUsd":3810765023.48,"totalUnrealizedPnlUsd":-1095745023.48,"totalUnrealizedPnlPct":-28.753938296603838,"debt":{"totalDebtUsd":690000000,"convertibleNotesUsd":690000000,"otherDebtUsd":0,"hasLeverage":true,"notes":[{"title":"Zero-coupon bonds (multiple tranches)","notional":690000000,"maturity":"2025-2027 (various)","coupon":0,"strikePrice":null}],"source":"Metaplanet IR press releases, JPY bonds converted at ~150 JPY/USD. Data estimated from multiple issuances.","asOfDate":"2025-Q3"},"bankruptcy":{"bankruptcyPrice":16046.511627906977,"bufferPct":74.58582257220941,"currentPrice":63140,"coin":"btc"},"liquidityRisk":{"daysToExit":10.875743955612588,"level":2,"label":"7-30 days"},"sellability":"restricted","lockStatus":"free","mnavPremium":2.5,"risk":{"total":9,"level":"high","breakdown":{"leverage":2,"concentration":3,"liquidity":2,"reflexivity":2}},"notes":"Japanese listed company. Issued multiple zero-coupon bonds to buy BTC. High mNAV premium. Aggressive accumulation strategy.","recentChange":null},{"name":"MARA Holdings (Marathon Digital)","symbol":"MARA.US","country":"US","primaryCoin":"BTC","holdings":{"btc":{"quantity":35303,"entryValueUsd":0,"currentValueUsd":2229031420,"avgCost":null,"percentOfCirculating":0.168,"unrealizedUsd":null,"unrealizedPct":null}},"totalCurrentValueUsd":2229031420,"totalEntryValueUsd":null,"totalUnrealizedPnlUsd":null,"totalUnrealizedPnlPct":null,"debt":{"totalDebtUsd":1350000000,"convertibleNotesUsd":1350000000,"otherDebtUsd":0,"hasLeverage":true,"notes":[{"title":"0% Convertible Notes due 2030","notional":850000000,"maturity":"2030-03-01","coupon":0,"strikePrice":null},{"title":"0% Convertible Notes due 2031","notional":500000000,"maturity":"2031-03-01","coupon":0,"strikePrice":null}],"source":"MARA SEC filings (8-K, 2024). Approximate values from public issuance announcements.","asOfDate":"2025-Q1"},"bankruptcy":{"bankruptcyPrice":38240.376171996715,"bufferPct":39.435577808050816,"currentPrice":63140,"coin":"btc"},"liquidityRisk":{"daysToExit":8.928985787557934,"level":2,"label":"7-30 days"},"sellability":"restricted","lockStatus":"free","mnavPremium":1.3,"risk":{"total":9,"level":"high","breakdown":{"leverage":3,"concentration":3,"liquidity":2,"reflexivity":1}},"notes":"BTC miner + treasury company. Revenue from mining operations partially offsets debt service.","recentChange":null},{"name":"Galaxy Digital","symbol":"GLXY.US","country":"US","primaryCoin":"BTC","holdings":{"btc":{"quantity":25723,"entryValueUsd":2282988000,"currentValueUsd":1624150220,"avgCost":88752.78933250399,"percentOfCirculating":0.122,"unrealizedUsd":-658837780,"unrealizedPct":-28.858573939065817},"eth":{"quantity":61137,"entryValueUsd":180946000,"currentValueUsd":112247532,"avgCost":2959.680717078038,"percentOfCirculating":0.051,"unrealizedUsd":-68698468,"unrealizedPct":-37.96628165308987},"sol":{"quantity":775289,"entryValueUsd":132044000,"currentValueUsd":57952852.75,"avgCost":170.31584351125838,"percentOfCirculating":0.133,"unrealizedUsd":-74091147.25,"unrealizedPct":-56.11095335645694}},"totalCurrentValueUsd":1794350604.75,"totalEntryValueUsd":2595978000,"totalUnrealizedPnlUsd":-801627395.25,"totalUnrealizedPnlPct":-30.879591246535988,"debt":{"totalDebtUsd":500000000,"convertibleNotesUsd":0,"otherDebtUsd":500000000,"hasLeverage":true,"notes":[{"title":"Credit facility / corporate debt","notional":500000000,"maturity":"various","coupon":null,"strikePrice":null}],"source":"Galaxy Digital financial reports. Diversified digital asset firm with trading desk.","asOfDate":"2024-Q4"},"bankruptcy":{"bankruptcyPrice":19437.85717062551,"bufferPct":69.21467030309549,"currentPrice":63140,"coin":"btc"},"liquidityRisk":{"daysToExit":6.505971203958666,"level":1,"label":"1-7 days"},"sellability":"free","lockStatus":"free","mnavPremium":0.9,"risk":{"total":5,"level":"medium","breakdown":{"leverage":2,"concentration":2,"liquidity":1,"reflexivity":0}},"notes":"Diversified crypto firm (trading, lending, mining, investments). Multi-asset holdings. Not a pure treasury play.","recentChange":null},{"name":"SharpLink Gaming","symbol":"SBET.US","country":"US","primaryCoin":"ETH","holdings":{"eth":{"quantity":868699,"entryValueUsd":0,"currentValueUsd":1594931364,"avgCost":null,"percentOfCirculating":0.72,"unrealizedUsd":null,"unrealizedPct":null}},"totalCurrentValueUsd":1594931364,"totalEntryValueUsd":null,"totalUnrealizedPnlUsd":null,"totalUnrealizedPnlPct":null,"debt":{"totalDebtUsd":null,"convertibleNotesUsd":null,"otherDebtUsd":null,"hasLeverage":false,"notes":[],"source":"Limited public disclosures. Pivoted to ETH treasury strategy 2024.","asOfDate":"2024-Q4"},"bankruptcy":{"bankruptcyPrice":null,"bufferPct":null,"reason":"No leverage / no forced liquidation price"},"liquidityRisk":{"daysToExit":16.18210730992119,"level":2,"label":"7-30 days"},"sellability":"restricted","lockStatus":"restricted","mnavPremium":null,"risk":{"total":6,"level":"medium","breakdown":{"leverage":0,"concentration":3,"liquidity":2,"reflexivity":1}},"notes":"Gaming/sports betting company that pivoted to ETH treasury. Micro-cap.","recentChange":null},{"name":"Coinbase Global","symbol":"COIN.US","country":"US","primaryCoin":"BTC","holdings":{"btc":{"quantity":16492,"entryValueUsd":1156722999,"currentValueUsd":1041304880,"avgCost":70138.43069366965,"percentOfCirculating":0.079,"unrealizedUsd":-115418119,"unrealizedPct":-9.97802577624723},"eth":{"quantity":150193,"entryValueUsd":357116000,"currentValueUsd":275754348,"avgCost":2377.7140079764035,"percentOfCirculating":0.124,"unrealizedUsd":-81361652,"unrealizedPct":-22.782975839783152}},"totalCurrentValueUsd":1317059228,"totalEntryValueUsd":1513838999,"totalUnrealizedPnlUsd":-196779771,"totalUnrealizedPnlPct":-12.998725170245134,"debt":{"totalDebtUsd":4300000000,"convertibleNotesUsd":1300000000,"otherDebtUsd":3000000000,"hasLeverage":true,"notes":[{"title":"0.50% Convertible Notes due 2026","notional":1300000000,"maturity":"2026-06-01","coupon":0.5,"strikePrice":null},{"title":"Senior Notes (various)","notional":3000000000,"maturity":"2028-2031","coupon":null,"strikePrice":null}],"source":"Coinbase 10-K 2024. Large exchange with diversified revenue.","asOfDate":"2024-Q4"},"bankruptcy":{"bankruptcyPrice":null,"bufferPct":null,"reason":"Debt exceeds crypto holdings 3x+ (company has non-crypto revenue)"},"liquidityRisk":{"daysToExit":4.1712271933944844,"level":1,"label":"1-7 days"},"sellability":"free","lockStatus":"free","mnavPremium":null,"risk":{"total":6,"level":"medium","breakdown":{"leverage":3,"concentration":1,"liquidity":1,"reflexivity":1}},"notes":"Largest US crypto exchange. Holdings are corporate treasury, not primary business model. $4.3B debt offset by substantial revenue ($5B+ annual).","recentChange":null},{"name":"Riot Platforms","symbol":"RIOT.US","country":"US","primaryCoin":"BTC","holdings":{"btc":{"quantity":15680,"entryValueUsd":0,"currentValueUsd":990035200,"avgCost":null,"percentOfCirculating":0.075,"unrealizedUsd":null,"unrealizedPct":null}},"totalCurrentValueUsd":990035200,"totalEntryValueUsd":null,"totalUnrealizedPnlUsd":null,"totalUnrealizedPnlPct":null,"debt":{"totalDebtUsd":460000000,"convertibleNotesUsd":460000000,"otherDebtUsd":0,"hasLeverage":true,"notes":[{"title":"0.75% Convertible Notes due 2030","notional":460000000,"maturity":"2030-01-15","coupon":0.75,"strikePrice":null}],"source":"Riot 8-K filing Dec 2024. Data estimated.","asOfDate":"2024-Q4"},"bankruptcy":{"bankruptcyPrice":29336.73469387755,"bufferPct":53.53700555293387,"currentPrice":63140,"coin":"btc"},"liquidityRisk":{"daysToExit":3.9658526796280325,"level":1,"label":"1-7 days"},"sellability":"free","lockStatus":"free","mnavPremium":0.9,"risk":{"total":6,"level":"medium","breakdown":{"leverage":2,"concentration":3,"liquidity":1,"reflexivity":0}},"notes":"BTC miner with HODL strategy. Has mining revenue stream. Relatively conservative leverage.","recentChange":null},{"name":"CleanSpark","symbol":"CLSK.US","country":"US","primaryCoin":"BTC","holdings":{"btc":{"quantity":13470,"entryValueUsd":0,"currentValueUsd":850495800,"avgCost":null,"percentOfCirculating":0.064,"unrealizedUsd":null,"unrealizedPct":null}},"totalCurrentValueUsd":850495800,"totalEntryValueUsd":null,"totalUnrealizedPnlUsd":null,"totalUnrealizedPnlPct":null,"debt":{"totalDebtUsd":550000000,"convertibleNotesUsd":550000000,"otherDebtUsd":0,"hasLeverage":true,"notes":[{"title":"0% Convertible Notes due 2030","notional":550000000,"maturity":"2030-06-15","coupon":0,"strikePrice":null}],"source":"CleanSpark 8-K filing 2024. Data estimated.","asOfDate":"2024-Q4"},"bankruptcy":{"bankruptcyPrice":40831.47735708983,"bufferPct":35.33183820543264,"currentPrice":63140,"coin":"btc"},"liquidityRisk":{"daysToExit":3.4068900251651533,"level":1,"label":"1-7 days"},"sellability":"free","lockStatus":"free","mnavPremium":1,"risk":{"total":7,"level":"high","breakdown":{"leverage":3,"concentration":3,"liquidity":1,"reflexivity":0}},"notes":"BTC miner. Revenue from mining operations. Moderate leverage.","recentChange":null},{"name":"Bit Digital","symbol":"BTBT.US","country":"US","primaryCoin":"ETH","holdings":{"btc":{"quantity":3.9999999999999996,"entryValueUsd":348410,"currentValueUsd":252559.99999999997,"avgCost":87102.50000000001,"percentOfCirculating":0,"unrealizedUsd":-95850.00000000003,"unrealizedPct":-27.510691426767327},"eth":{"quantity":158461.75,"entryValueUsd":450300476,"currentValueUsd":290935773,"avgCost":2841.6982394805054,"percentOfCirculating":0.131,"unrealizedUsd":-159364703,"unrealizedPct":-35.390747177446904}},"totalCurrentValueUsd":291188333,"totalEntryValueUsd":450648886,"totalUnrealizedPnlUsd":-159460553,"totalUnrealizedPnlPct":-35.38465487297355,"debt":{"totalDebtUsd":0,"convertibleNotesUsd":0,"otherDebtUsd":0,"hasLeverage":false,"notes":[],"source":"Bit Digital 10-K filings. Primarily equity funded.","asOfDate":"2024-Q4"},"bankruptcy":{"bankruptcyPrice":null,"bufferPct":null,"reason":"No leverage / no forced liquidation price"},"liquidityRisk":{"daysToExit":2.9518222572121116,"level":1,"label":"1-7 days"},"sellability":"restricted","lockStatus":"restricted","mnavPremium":0.8,"risk":{"total":3,"level":"low","breakdown":{"leverage":0,"concentration":2,"liquidity":1,"reflexivity":0}},"notes":"Crypto miner + ETH staker. Revenue from staking + GPU computing. No significant debt.","recentChange":null},{"name":"DeFi Development Corp","symbol":"DFDV.US","country":"US","primaryCoin":"SOL","holdings":{"sol":{"quantity":2223074,"entryValueUsd":0,"currentValueUsd":166174781.5,"avgCost":null,"percentOfCirculating":0.382,"unrealizedUsd":null,"unrealizedPct":null}},"totalCurrentValueUsd":166174781.5,"totalEntryValueUsd":null,"totalUnrealizedPnlUsd":null,"totalUnrealizedPnlPct":null,"debt":{"totalDebtUsd":null,"convertibleNotesUsd":null,"otherDebtUsd":null,"hasLeverage":false,"notes":[],"source":"Newly renamed/restructured company. Limited historical filings.","asOfDate":"2025-Q1"},"bankruptcy":{"bankruptcyPrice":null,"bufferPct":null,"reason":"No leverage / no forced liquidation price"},"liquidityRisk":{"daysToExit":10.929707158110974,"level":2,"label":"7-30 days"},"sellability":"restricted","lockStatus":"restricted","mnavPremium":null,"risk":{"total":6,"level":"medium","breakdown":{"leverage":0,"concentration":3,"liquidity":2,"reflexivity":1}},"notes":"Formerly Janover. Pivoted to SOL treasury + staking strategy in early 2025.","recentChange":null},{"name":"Upexi","symbol":"UPXI.US","country":"US","primaryCoin":"SOL","holdings":{"sol":{"quantity":2173204,"entryValueUsd":325341218,"currentValueUsd":162446999,"avgCost":149.7057883199184,"percentOfCirculating":0.373,"unrealizedUsd":-162894219,"unrealizedPct":-50.06873091622839}},"totalCurrentValueUsd":162446999,"totalEntryValueUsd":325341218,"totalUnrealizedPnlUsd":-162894219,"totalUnrealizedPnlPct":-50.06873091622839,"debt":{"totalDebtUsd":0,"convertibleNotesUsd":0,"otherDebtUsd":0,"hasLeverage":false,"notes":[],"source":"Upexi press releases. Funded via equity raise ($100M+).","asOfDate":"2025-Q2"},"bankruptcy":{"bankruptcyPrice":null,"bufferPct":null,"reason":"No leverage / no forced liquidation price"},"liquidityRisk":{"daysToExit":10.684522114349498,"level":2,"label":"7-30 days"},"sellability":"restricted","lockStatus":"restricted","mnavPremium":2,"risk":{"total":7,"level":"high","breakdown":{"leverage":0,"concentration":3,"liquidity":2,"reflexivity":2}},"notes":"Consumer products company that pivoted to SOL treasury. Funded by equity raise. High mNAV premium.","recentChange":null},{"name":"SOL Strategies","symbol":"HODL.CN","country":"CA","primaryCoin":"SOL","holdings":{"sol":{"quantity":533040,"entryValueUsd":0,"currentValueUsd":39844740,"avgCost":null,"percentOfCirculating":0.092,"unrealizedUsd":null,"unrealizedPct":null}},"totalCurrentValueUsd":39844740,"totalEntryValueUsd":null,"totalUnrealizedPnlUsd":null,"totalUnrealizedPnlPct":null,"debt":{"totalDebtUsd":25000000,"convertibleNotesUsd":25000000,"otherDebtUsd":0,"hasLeverage":true,"notes":[{"title":"Convertible Note","notional":25000000,"maturity":"2026","coupon":null,"strikePrice":null}],"source":"SOL Strategies press releases. CAD-denominated, converted at ~0.73 USD/CAD.","asOfDate":"2025-Q1"},"bankruptcy":{"bankruptcyPrice":46.90079543749062,"bufferPct":37.2564609531898,"currentPrice":74.75,"coin":"sol"},"liquidityRisk":{"daysToExit":2.6206824890037277,"level":1,"label":"1-7 days"},"sellability":"restricted","lockStatus":"restricted","mnavPremium":1.5,"risk":{"total":8,"level":"high","breakdown":{"leverage":3,"concentration":3,"liquidity":1,"reflexivity":1}},"notes":"Canadian-listed SOL treasury + validator operator. Previously named Cypherpunk Holdings.","recentChange":null},{"name":"Semler Scientific","symbol":"SMLR.US","country":"US","primaryCoin":"BTC","holdings":{"btc":{"quantity":0,"entryValueUsd":0,"currentValueUsd":0,"avgCost":null,"percentOfCirculating":0,"unrealizedUsd":null,"unrealizedPct":null}},"totalCurrentValueUsd":0,"totalEntryValueUsd":null,"totalUnrealizedPnlUsd":null,"totalUnrealizedPnlPct":null,"debt":{"totalDebtUsd":85000000,"convertibleNotesUsd":85000000,"otherDebtUsd":0,"hasLeverage":true,"notes":[{"title":"Convertible Notes (various)","notional":85000000,"maturity":"2029","coupon":null,"strikePrice":null}],"source":"Semler Scientific press releases and 8-K filings 2024. Data estimated.","asOfDate":"2024-Q4"},"bankruptcy":{"bankruptcyPrice":null,"bufferPct":null,"reason":"Debt exceeds crypto holdings 3x+ (company has non-crypto revenue)"},"liquidityRisk":{"daysToExit":0,"level":0,"label":"< 1 day"},"sellability":"free","lockStatus":"free","mnavPremium":1.5,"risk":{"total":4,"level":"medium","breakdown":{"leverage":0,"concentration":3,"liquidity":0,"reflexivity":1}},"notes":"Medical device company that adopted BTC treasury strategy in 2024. Small position relative to other DAT companies.","recentChange":null}],"top3Vulnerable":[{"name":"Strategy (MicroStrategy)","symbol":"MSTR.US","riskScore":9,"riskLevel":"high","primaryReason":"单币种集中持仓；流动性受限；mNAV 溢价过高"},{"name":"Metaplanet","symbol":"3350.T","riskScore":9,"riskLevel":"high","primaryReason":"高杠杆；单币种集中持仓；流动性受限；mNAV 溢价过高"},{"name":"MARA Holdings (Marathon Digital)","symbol":"MARA.US","riskScore":9,"riskLevel":"high","primaryReason":"高杠杆；单币种集中持仓；流动性受限"}],"changeLog":[],"disclaimer":"This analysis is for informational purposes only and does not constitute investment advice. Data may be stale or inaccurate. Verify independently before making decisions."};</script>
+</head>
+<body>
+<div class="container">
+<h1>数字资产储备公司 (DAT) 仪表盘</h1>
+<p class="subtitle">Digital Asset Treasury Companies &mdash; 每日自动更新风险监控</p>
+<div class="status-bar">
+  <div class="status-dot" id="status-dot"></div>
+  <span id="status-text">加载中...</span>
+  <span style="margin-left:auto;color:var(--text-dim)" id="last-update"></span>
+</div>
+<div class="disclaimer">本报告仅供研究参考，不构成任何投资建议。数据通过定时脚本每日更新，请以一手信息源为准。</div>
+
+<div class="grid-3">
+  <div class="card"><div class="card-title">持仓总市值</div><div class="card-value" id="total-val">--</div></div>
+  <div class="card"><div class="card-title">BTC 价格</div><div class="card-value" id="btc-price">--</div></div>
+  <div class="card"><div class="card-title">高风险公司</div><div class="card-value" id="high-risk-count">--</div></div>
+</div>
+
+<h2>持仓与风险总览</h2>
+<div class="filters">
+  <button class="filter-btn active" data-filter="all">全部</button>
+  <button class="filter-btn" data-filter="btc">BTC</button>
+  <button class="filter-btn" data-filter="eth">ETH</button>
+  <button class="filter-btn" data-filter="sol">SOL</button>
+  <button class="filter-btn" data-filter="high-risk">高风险</button>
+  <button class="filter-btn" data-filter="changed">有变动</button>
+</div>
+<div style="overflow-x:auto"><table id="main-table"><thead><tr>
+<th data-col="rank">#</th>
+<th data-col="name" title="公司名称及股票代码">公司</th>
+<th data-col="primaryCoin" title="该公司主要持有的加密货币币种">币种</th>
+<th data-col="quantity" title="持仓量：该公司持有的加密货币数量及当前美元市值&#10;&#10;数据来源：CoinGecko 公司储备 API&#10;(api.coingecko.com/api/v3/companies/public_treasury)">持仓量</th>
+<th data-col="avgCost" title="平均买入成本 = 总买入金额 ÷ 持币数量&#10;&#10;数据来源：CoinGecko API (total_entry_value_usd 字段)&#10;注：部分公司未披露，显示为 —">均价</th>
+<th data-col="pctCirculating" title="该公司持仓量占该币种全网流通供应量的百分比&#10;&#10;占比越高 = 对市场价格影响越大">占流通%</th>
+<th data-col="pnlPct" title="未实现盈亏百分比&#10;公式：(当前市值 - 买入成本) ÷ 买入成本 × 100%&#10;&#10;绿色 = 盈利，红色 = 亏损">盈亏</th>
+<th data-col="bankruptcyPrice" title="破产价格：币价跌到此价位时，公司负债将超过加密资产价值&#10;&#10;公式：总债务 ÷ 主要币种持仓量&#10;&#10;仅适用于有杠杆（借债买币）的公司&#10;无杠杆公司显示 N/A">破产价</th>
+<th data-col="bufferPct" title="破产缓冲：当前币价距离破产价的安全距离&#10;&#10;公式：(当前价 - 破产价) ÷ 当前价 × 100%&#10;&#10;缓冲越小 = 越接近破产，越危险&#10;例如 35% 表示币价再跌 35% 就触及破产价">缓冲</th>
+<th data-col="sellability" title="可售性：该公司能否自由出售其加密资产&#10;&#10;✅ 自由 = 无限制，随时可卖&#10;⚠️ 受限 = 质押锁定或流动性差，无法短期内全部卖出&#10;❌ 困难 = 严重受限，几乎无法退出&#10;&#10;数据来源：人工研究（SEC 文件 + 公司公告）">可售性</th>
+<th data-col="deltaUsd" title="持仓变动：对比前一日的持仓量变化&#10;&#10;🔴 负数 = 卖出/减持&#10;🟢 正数 = 买入/增持&#10;— = 无变动">变动</th>
+<th data-col="riskTotal" title="综合风险评分 (0-12分)，由 4 个维度各 0-3 分加总：&#10;&#10;① 杠杆：负债率越高分越高&#10;② 集中度：单币种占比越高分越高&#10;③ 流动性：清仓所需天数越多分越高&#10;④ 反身性：股价/NAV溢价越高分越高&#10;&#10;低(0-3) / 中(4-6) / 高(7-9) / 危急(10-12)">风险</th>
+</tr></thead><tbody id="table-body"><tr><td colspan="12" class="loading">加载中...</td></tr></tbody></table></div>
+
+<h2>风险评估</h2>
+<h3>最脆弱的 3 家公司</h3>
+<div id="vulnerable-section"><div class="loading">加载中...</div></div>
+
+<h2>图表</h2>
+<h3>持仓市值</h3><div id="chart-holdings" class="bar-chart"></div>
+
+<h3>破产缓冲</h3>
+<div class="formula-box">
+<div class="formula-title">什么是破产缓冲？</div>
+衡量有杠杆的公司距离"资不抵债"还有多少安全距离。<br>
+<strong>公式：</strong><code>缓冲% = (当前币价 - 破产价) ÷ 当前币价 × 100%</code><br>
+<strong>其中：</strong><code>破产价 = 公司总债务 ÷ 主要币种持仓量</code><br><br>
+<strong>解读：</strong>数值越小越危险。例如 35% 表示币价再跌 35% 即触及破产线。<br>
+<strong>适用：</strong>仅针对有借债买币（杠杆）的公司。无杠杆公司不存在破产价。
+</div>
+<div id="chart-buffer" class="bar-chart"></div>
+
+<h3>风险评分</h3>
+<div class="formula-box">
+<div class="formula-title">风险评分计算方法</div>
+综合评分 = 杠杆分 + 集中度分 + 流动性分 + 反身性分（每项 0-3 分，满分 12）<br><br>
+<strong>① 杠杆 (0-3)：</strong>LTV = 总债务 ÷ 持仓市值。无债=0, &lt;20%=1, 20-50%=2, &gt;50%=3<br>
+<strong>② 集中度 (0-3)：</strong>最大单币种占总持仓比例。&lt;50%=0, 50-80%=1, &gt;80%=2, 仅持单币=3<br>
+<strong>③ 流动性 (0-3)：</strong>按每日交易量 1% 估算清仓所需天数。&lt;1天=0, 1-7天=1, 7-30天=2, &gt;30天=3<br>
+<strong>④ 反身性 (0-3)：</strong>股价/净资产溢价倍数 (mNAV)。≤1=0, 1-1.5=1, 1.5-3=2, &gt;3=3<br><br>
+<strong>分级：</strong>低风险(0-3) / 中风险(4-6) / 高风险(7-9) / 危急(10-12)
+</div>
+<div id="chart-risk" class="bar-chart"></div>
+
+<h2>持仓变动历史</h2>
+<div id="change-log-section"><div class="loading">加载中...</div></div>
+
+<div class="meta">
+  <p>数据来源：CoinGecko API + 人工研究 | 每日通过 <code>node scripts/update.js</code> 自动更新</p>
+  <p>本页面不构成投资建议。历史表现不代表未来收益。</p>
+</div>
+</div>
+
+<script>
+let DATA = null;
+let sortCol = "riskTotal", sortDir = -1, activeFilter = "all";
+
+function fmt(n, d=0) { if (n == null) return "—"; return n.toLocaleString("en-US", {maximumFractionDigits: d}); }
+function fmtUsd(n) { if (n == null) return "—"; if (Math.abs(n) >= 1e9) return "$" + (n/1e9).toFixed(2) + "B"; if (Math.abs(n) >= 1e6) return "$" + (n/1e6).toFixed(1) + "M"; return "$" + fmt(n); }
+function fmtPct(n) { return n == null ? "—" : n.toFixed(1) + "%"; }
+
+async function loadData() {
+  // Try fetch first (works when served via HTTP), fall back to inline data (works with file://)
+  try {
+    const res = await fetch("data.json?_=" + Date.now());
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    DATA = await res.json();
+  } catch (e) {
+    if (window.__INLINE_DATA__) {
+      DATA = window.__INLINE_DATA__;
+    } else {
+      document.getElementById("status-dot").className = "status-dot error";
+      document.getElementById("status-text").textContent = "数据加载失败: " + e.message;
+      document.getElementById("status-text").style.color = "var(--red)";
+      document.getElementById("table-body").innerHTML = '<tr><td colspan="11" class="error-state">数据不可用。请运行 <code>node scripts/update.js</code> 生成数据，或通过 HTTP 服务器访问。</td></tr>';
+      return;
+    }
+  }
+  const age = (Date.now() - new Date(DATA.generatedAt).getTime()) / 3600000;
+  const dot = document.getElementById("status-dot");
+  const statusText = document.getElementById("status-text");
+  if (age > 48) {
+    dot.className = "status-dot stale";
+    statusText.textContent = "数据已过期 (>" + Math.floor(age/24) + " 天前)";
+    statusText.style.color = "var(--orange)";
+  } else {
+    dot.className = "status-dot";
+    statusText.textContent = "数据正常";
+    statusText.style.color = "var(--green)";
+  }
+  document.getElementById("last-update").textContent = "上次更新: " + new Date(DATA.generatedAt).toLocaleString();
+  render();
+}
+
+function render() {
+  if (!DATA) return;
+  document.getElementById("total-val").textContent = fmtUsd(DATA.companies.reduce((s,c) => s + c.totalCurrentValueUsd, 0));
+  document.getElementById("btc-price").textContent = "$" + fmt(DATA.prices.btc);
+  document.getElementById("high-risk-count").textContent = DATA.companies.filter(c => c.risk.total >= 7).length + " / " + DATA.companies.length;
+
+  renderTable();
+  renderVulnerable();
+  renderCharts();
+  renderChangeLog();
+}
+
+function filterCompanies() {
+  return DATA.companies.filter(c => {
+    if (activeFilter === "all") return true;
+    if (activeFilter === "high-risk") return c.risk.total >= 7;
+    if (activeFilter === "changed") return c.recentChange && Object.keys(c.recentChange.coins || {}).length > 0;
+    return c.primaryCoin.toLowerCase() === activeFilter;
+  });
+}
+
+function getRecentChange(c) {
+  if (!c.recentChange || !c.recentChange.coins) return { deltaUsd: null, text: "—" };
+  let totalDeltaUsd = 0;
+  const parts = [];
+  for (const [coin, ch] of Object.entries(c.recentChange.coins)) {
+    totalDeltaUsd += ch.deltaUsd || 0;
+    const sign = ch.delta > 0 ? "+" : "";
+    parts.push(sign + fmt(ch.delta) + " " + coin.toUpperCase());
+  }
+  const icon = totalDeltaUsd < 0 ? "🔴" : "🟢";
+  const cls = totalDeltaUsd < 0 ? "pnl-neg" : "pnl-pos";
+  const text = '<span class="' + cls + '">' + icon + " " + parts.join(", ") + '<br><span style="font-size:.73rem">' + (totalDeltaUsd > 0 ? "+" : "") + fmtUsd(totalDeltaUsd) + "</span></span>";
+  return { deltaUsd: totalDeltaUsd, text };
+}
+
+function renderTable() {
+  const filtered = filterCompanies();
+  const rows = filtered.map((c, i) => {
+    const p = c.primaryCoin.toLowerCase();
+    const h = c.holdings[p];
+    const change = getRecentChange(c);
+    return { rank: i+1, name: c.name, symbol: c.symbol, primaryCoin: c.primaryCoin.toUpperCase(), quantity: h ? h.quantity : 0, avgCost: h ? h.avgCost : null, pctCirculating: h ? h.percentOfCirculating : null, pnlPct: c.totalUnrealizedPnlPct, bankruptcyPrice: c.bankruptcy.bankruptcyPrice, bufferPct: c.bankruptcy.bufferPct, sellability: c.sellability, deltaUsd: change.deltaUsd, changeText: change.text, riskTotal: c.risk.total, riskLevel: c.risk.level, totalValue: c.totalCurrentValueUsd };
+  });
+  rows.sort((a, b) => { let va = a[sortCol], vb = b[sortCol]; if (va == null) va = -Infinity; if (vb == null) vb = -Infinity; return (va > vb ? 1 : va < vb ? -1 : 0) * sortDir; });
+  document.getElementById("table-body").innerHTML = rows.map((r, i) => {
+    const cb = '<span class="badge badge-' + r.primaryCoin.toLowerCase() + '">' + r.primaryCoin + '</span>';
+    const pc = r.pnlPct > 0 ? "pnl-pos" : r.pnlPct < 0 ? "pnl-neg" : "";
+    const rc = "risk-" + r.riskLevel;
+    const sl = r.sellability === "free" ? "✅ 自由" : r.sellability === "restricted" ? "⚠️ 受限" : "❌ 困难";
+    return "<tr><td>" + (i+1) + "</td><td><strong>" + r.name + '</strong><br><span style="color:var(--text-dim);font-size:.73rem">' + r.symbol + "</span></td><td>" + cb + "</td><td>" + fmt(r.quantity) + '<br><span style="color:var(--text-dim);font-size:.73rem">' + fmtUsd(r.totalValue) + "</span></td><td>" + (r.avgCost ? "$" + fmt(r.avgCost) : "—") + "</td><td>" + (r.pctCirculating ? r.pctCirculating.toFixed(3) + "%" : "—") + '</td><td class="' + pc + '">' + fmtPct(r.pnlPct) + "</td><td>" + (r.bankruptcyPrice ? "$" + fmt(r.bankruptcyPrice) : "N/A") + "</td><td>" + (r.bufferPct != null ? '<span class="' + (r.bufferPct > 50 ? "pnl-pos" : r.bufferPct > 20 ? "" : "pnl-neg") + '">' + r.bufferPct.toFixed(1) + "%</span>" : "—") + "</td><td>" + sl + "</td><td>" + r.changeText + '</td><td><span class="' + rc + '" style="font-weight:700">' + r.riskTotal + '/12</span><br><span class="' + rc + '" style="font-size:.73rem">' + r.riskLevel.toUpperCase() + "</span></td></tr>";
+  }).join("");
+}
+
+function renderVulnerable() {
+  document.getElementById("vulnerable-section").innerHTML = DATA.top3Vulnerable.map((v, i) =>
+    '<div class="vulnerable-card"><h4>#' + (i+1) + " " + v.name + " (" + v.symbol + ") — 风险 " + v.riskScore + '/12</h4><div class="reason">主要风险：' + v.primaryReason + "</div></div>"
+  ).join("");
+}
+
+function renderBarChart(id, data, colorFn) {
+  const el = document.getElementById(id); if (!el) return;
+  const valid = data.filter(d => d.value != null && d.value > 0);
+  if (!valid.length) { el.innerHTML = '<p style="color:var(--text-dim)">暂无数据</p>'; return; }
+  const mx = Math.max(...valid.map(d => d.value));
+  el.innerHTML = valid.map(d => { const pct = Math.max(2, (d.value/mx)*100); const col = colorFn ? colorFn(d) : "var(--accent)"; return '<div class="bar-row"><div class="bar-label">' + d.label + '</div><div class="bar-track"><div class="bar-fill" style="width:' + pct + '%;background:' + col + '">' + (pct > 20 ? d.display : '') + '</div></div><div class="bar-value">' + (pct <= 20 ? d.display : '') + '</div></div>'; }).join("");
+}
+
+function renderCharts() {
+  renderBarChart("chart-holdings", DATA.companies.map(c => ({label: c.symbol.split(".")[0], value: c.totalCurrentValueUsd, display: fmtUsd(c.totalCurrentValueUsd)})), d => d.value > 10e9 ? "var(--orange)" : d.value > 1e9 ? "var(--accent)" : "#6b7280");
+  const bd = DATA.companies.filter(c => c.bankruptcy.bufferPct != null).sort((a,b) => a.bankruptcy.bufferPct - b.bankruptcy.bufferPct).map(c => ({label: c.symbol.split(".")[0], value: c.bankruptcy.bufferPct, display: c.bankruptcy.bufferPct.toFixed(1) + "%"}));
+  renderBarChart("chart-buffer", bd, d => d.value < 50 ? "var(--red)" : d.value < 70 ? "var(--yellow)" : "var(--green)");
+  renderBarChart("chart-risk", [...DATA.companies].sort((a,b) => b.risk.total - a.risk.total).map(c => ({label: c.symbol.split(".")[0], value: c.risk.total, display: c.risk.total + "/12"})), d => d.value >= 10 ? "var(--red)" : d.value >= 7 ? "var(--orange)" : d.value >= 4 ? "var(--yellow)" : "var(--green)");
+}
+
+function renderChangeLog() {
+  const el = document.getElementById("change-log-section");
+  const log = DATA.changeLog || [];
+  if (!log.length) {
+    el.innerHTML = '<div class="empty-state">暂无历史数据，明日起开始记录变动</div>';
+    return;
+  }
+  const typeLabel = { sell: "卖出", buy: "买入" };
+  let html = '<table class="change-log-table"><thead><tr><th>日期</th><th>公司</th><th>币种</th><th>变动量</th><th>美元价值</th><th>类型</th></tr></thead><tbody>';
+  html += log.slice(0, 100).map(e => {
+    const cls = e.type === "sell" ? "change-sell" : "change-buy";
+    const sign = e.delta > 0 ? "+" : "";
+    const color = e.type === "sell" ? "var(--red)" : "var(--green)";
+    return '<tr class="' + cls + '"><td>' + e.date + "</td><td>" + (e.name || e.symbol) + "</td><td>" + e.coin.toUpperCase() + '</td><td style="color:' + color + '">' + sign + fmt(e.delta) + '</td><td style="color:' + color + '">' + (e.deltaUsd > 0 ? "+" : "") + fmtUsd(e.deltaUsd) + '</td><td style="color:' + color + ';font-weight:600">' + (typeLabel[e.type] || e.type) + "</td></tr>";
+  }).join("");
+  html += "</tbody></table>";
+  if (log.length > 100) html += '<p style="color:var(--text-dim);font-size:.8rem;margin-top:8px">仅显示最近 100 条记录</p>';
+  el.innerHTML = html;
+}
+
+// Event listeners
+document.querySelectorAll("#main-table th").forEach(th => {
+  th.addEventListener("click", () => { const col = th.dataset.col; if (!col) return; if (sortCol === col) sortDir *= -1; else { sortCol = col; sortDir = -1; } renderTable(); });
+});
+document.querySelectorAll(".filter-btn").forEach(btn => {
+  btn.addEventListener("click", () => { document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active")); btn.classList.add("active"); activeFilter = btn.dataset.filter; renderTable(); });
+});
+
+loadData();
+</script>
+</body>
+</html>
