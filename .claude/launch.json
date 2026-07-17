@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "dat-server",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["C:/Users/ivecott.ma/dat-analysis/serve.js"],
+      "port": 3849
+    }
+  ]
+}

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DAT Risk Analysis Report</title>
+<style>
+:root{--bg:#0f1117;--surface:#1a1d27;--border:#2a2d3a;--text:#e4e4e7;--text-dim:#9ca3af;--accent:#6366f1;--green:#22c55e;--red:#ef4444;--yellow:#eab308;--orange:#f97316}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,monospace;background:var(--bg);color:var(--text);line-height:1.6;padding:20px}
+.container{max-width:1400px;margin:0 auto}
+h1{font-size:1.8rem;margin-bottom:4px}h2{font-size:1.3rem;margin:24px 0 12px;color:var(--accent);border-bottom:1px solid var(--border);padding-bottom:6px}h3{font-size:1.1rem;margin:16px 0 8px}
+.subtitle{color:var(--text-dim);font-size:.9rem;margin-bottom:20px}
+.disclaimer{background:#1c1408;border:1px solid #854d0e;border-radius:8px;padding:12px 16px;margin:16px 0;font-size:.85rem;color:#fbbf24}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px}
+.card-title{font-size:.85rem;color:var(--text-dim);margin-bottom:4px}
+.card-value{font-size:1.5rem;font-weight:700}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.filter-btn{background:var(--surface);border:1px solid var(--border);color:var(--text);padding:6px 14px;border-radius:6px;cursor:pointer;font-size:.85rem;transition:all .2s}
+.filter-btn:hover,.filter-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+table{width:100%;border-collapse:collapse;font-size:.82rem;margin:12px 0}
+th{background:var(--surface);padding:10px 8px;text-align:left;border-bottom:2px solid var(--border);cursor:pointer;user-select:none;white-space:nowrap;position:sticky;top:0;z-index:10}
+th:hover{color:var(--accent)}td{padding:8px;border-bottom:1px solid var(--border);vertical-align:top}
+tr:hover{background:rgba(99,102,241,.05)}
+.risk-low{color:var(--green)}.risk-medium{color:var(--yellow)}.risk-high{color:var(--orange)}.risk-critical{color:var(--red)}
+.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.75rem;font-weight:600}
+.badge-btc{background:#f59e0b20;color:#f59e0b}.badge-eth{background:#6366f120;color:#8b8ff5}.badge-sol{background:#9333ea20;color:#a855f7}
+.pnl-pos{color:var(--green)}.pnl-neg{color:var(--red)}
+.bar-chart{margin:16px 0}
+.bar-row{display:flex;align-items:center;margin:4px 0;gap:8px}
+.bar-label{width:140px;font-size:.8rem;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-track{flex:1;height:22px;background:var(--surface);border-radius:4px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;display:flex;align-items:center;padding-left:6px;font-size:.7rem;color:#fff;font-weight:600}
+.bar-value{margin-left:8px;font-size:.75rem;color:var(--text-dim);white-space:nowrap}
+.vulnerable-card{background:linear-gradient(135deg,#1a0505,#1f1015);border:1px solid #7f1d1d;border-radius:8px;padding:16px;margin:8px 0}
+.vulnerable-card h4{color:var(--red);margin-bottom:4px}
+.vulnerable-card .reason{color:var(--text-dim);font-size:.85rem}
+.tooltip{position:relative;cursor:help;border-bottom:1px dotted var(--text-dim)}
+.tooltip::after{content:attr(data-tip);position:absolute;bottom:100%;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:6px 10px;border-radius:4px;font-size:.75rem;white-space:pre-wrap;max-width:280px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:100}
+.tooltip:hover::after{opacity:1}
+.meta{color:var(--text-dim);font-size:.78rem;margin-top:24px;border-top:1px solid var(--border);padding-top:12px}
+@media(max-width:900px){.grid-2{grid-template-columns:1fr}table{font-size:.75rem}.bar-label{width:80px}}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>Digital Asset Treasury Companies (DAT)</h1>
+<p class="subtitle">Risk Analysis Report &mdash; Snapshot: <span id="snap-date"></span></p>
+<div class="disclaimer">This report is for informational and research purposes only. It does not constitute investment advice. Data may be stale or estimated. Verify against primary sources (SEC filings, company IR pages) before making any decisions.</div>
+<div class="grid-2">
+<div class="card"><div class="card-title">Total Holdings Value (15 companies)</div><div class="card-value" id="total-val"></div></div>
+<div class="card"><div class="card-title">Current Prices</div><div class="card-value" id="prices-display"></div></div>
+</div>
+<h2>Holdings &amp; Risk Table</h2>
+<div class="filters">
+<button class="filter-btn active" data-filter="all">All (15)</button>
+<button class="filter-btn" data-filter="btc">BTC</button>
+<button class="filter-btn" data-filter="eth">ETH</button>
+<button class="filter-btn" data-filter="sol">SOL</button>
+<button class="filter-btn" data-filter="high-risk">High Risk Only</button>
+</div>
+<div style="overflow-x:auto"><table id="main-table"><thead><tr>
+<th data-col="rank">#</th>
+<th data-col="name">Company</th>
+<th data-col="primaryCoin">Coin</th>
+<th data-col="quantity">Holdings</th>
+<th data-col="avgCost"><span class="tooltip" data-tip="Total entry value / quantity. Null if undisclosed by company.">Avg Cost</span></th>
+<th data-col="pctCirculating"><span class="tooltip" data-tip="Holdings as % of total circulating supply">% Circ.</span></th>
+<th data-col="pnlPct"><span class="tooltip" data-tip="Unrealized profit/loss vs disclosed entry cost">P&amp;L</span></th>
+<th data-col="bankruptcyPrice"><span class="tooltip" data-tip="Coin price where total debt exceeds holdings value (leveraged only)">Bankr. Price</span></th>
+<th data-col="bufferPct"><span class="tooltip" data-tip="How far current price is above bankruptcy threshold">Buffer</span></th>
+<th data-col="sellability"><span class="tooltip" data-tip="Assessment: lock status + volume-based exit capacity + reflexivity">Sellability</span></th>
+<th data-col="riskTotal"><span class="tooltip" data-tip="Composite 0-12: leverage + concentration + liquidity + reflexivity">Risk</span></th>
+</tr></thead><tbody id="table-body"></tbody></table></div>
+
+<h2>Risk Assessment</h2>
+<h3>Top 3 Most Vulnerable</h3>
+<div id="vulnerable-section"></div>
+
+<h3>Risk Scoring Methodology</h3>
+<div class="card" style="font-size:.85rem">
+<p>Each company scored on 4 axes (0-3 each, total 0-12):</p>
+<ul style="margin:8px 0 0 20px">
+<li><strong>Leverage</strong>: 0=no debt, 1=LTV&lt;20%, 2=LTV 20-50%, 3=LTV&gt;50%</li>
+<li><strong>Concentration</strong>: 0=diversified multi-coin, 3=100% single coin exposure</li>
+<li><strong>Liquidity</strong>: 0=exit in &lt;1 day, 1=1-7d, 2=7-30d, 3=&gt;30 days (at 1% daily vol)</li>
+<li><strong>Reflexivity</strong>: 0=trades at/below NAV, 1=&lt;50% premium, 2=50-200%, 3=&gt;200% mNAV</li>
+</ul>
+<p style="margin-top:8px"><strong>Rating:</strong> Low (0-3) | Medium (4-6) | High (7-9) | Critical (10-12)</p>
+</div>
+
+<h2>Comparative Charts</h2>
+<h3>Holdings Value (USD)</h3><div id="chart-holdings" class="bar-chart"></div>
+<h3>Bankruptcy Price Buffer (leveraged companies only)</h3><div id="chart-buffer" class="bar-chart"></div>
+<h3>Risk Score Distribution</h3><div id="chart-risk" class="bar-chart"></div>
+
+<h2>Key Findings</h2>
+<div class="card" style="font-size:.85rem" id="findings"></div>
+
+<h2>Definitions &amp; Caveats</h2>
+<div class="card" style="font-size:.85rem">
+<p><strong>Bankruptcy Price:</strong> For leveraged companies, the coin price at which total debt exceeds total holdings value (debt / coin quantity). Most DAT companies use equity-settled convertible notes &mdash; no forced BTC liquidation occurs, but company may become insolvent if stock crashes and refinancing fails.</p>
+<p style="margin-top:8px"><strong>Sellability:</strong> Based on: (1) staking/lock status, (2) position size vs daily volume (assuming 1% of daily volume sellable without &gt;2% slippage), (3) reflexivity (selling triggers stock decline, triggering more selling).</p>
+<p style="margin-top:8px"><strong>Data Freshness:</strong> Holdings and prices from CoinGecko API (snapshot time shown above). Debt data from SEC filings and company disclosures (may lag by 1-2 quarters). Average cost shows "&#x2014;" when company has not disclosed entry price.</p>
+<p style="margin-top:8px"><strong>Sources:</strong> CoinGecko Public Treasury API, Strategy.com/debt, SEC EDGAR, company IR pages and press releases.</p>
+</div>
+<div class="meta">
+<p>Generated: <span id="gen-date"></span> | Data fetched: <span id="fetch-date"></span></p>
+<p>This is not investment advice. Past performance does not indicate future results. Verify all data independently.</p>
+</div>
+</div>
+<script>
+const DATA={"generatedAt":"2026-07-17T08:52:42.103Z","dataFetchedAt":"2026-07-17T08:39:57.971Z","prices":{"btc":62639,"eth":1820.9,"sol":74.22},"circulatingSupply":{"btc":20999875.55998009,"eth":120686843.75653629,"sol":582561728.3950617},"marketData":{"btc":{"marketCap":1256654292739.9858,"volume24h":28706703498.19354},"eth":{"marketCap":219826266380.78076,"volume24h":10274017395.720984},"sol":{"marketCap":43241606644.40562,"volume24h":1556997511.3078895}},"companies":[{"name":"Strategy (MicroStrategy)","symbol":"MSTR.US","country":"US","primaryCoin":"BTC","holdings":{"btc":{"quantity":843775,"entryValueUsd":63684761900,"currentValueUsd":52853222225,"avgCost":75476,"percentOfCirculating":4.018,"unrealizedUsd":-10831539675,"unrealizedPct":-17.00805554083417}},"totalCurrentValueUsd":52853222225,"totalEntryValueUsd":63684761900,"totalUnrealizedPnlUsd":-10831539675,"totalUnrealizedPnlPct":-17.00805554083417,"debt":{"totalDebtUsd":6713750000,"convertibleNotesUsd":6713750000,"otherDebtUsd":0,"hasLeverage":true,"notes":[{"title":"Convert 2028","notional":1010000000,"maturity":"2028-09-16","coupon":0.625,"strikePrice":183.19},{"title":"Convert 2029","notional":1500000000,"maturity":"2029-12-02","coupon":0,"strikePrice":672.4},{"title":"Convert 2030 A","notional":800000000,"maturity":"2030-03-16","coupon":0.625,"strikePrice":149.77},{"title":"Convert 2030 B","notional":2000000000,"maturity":"2030-03-02","coupon":0,"strikePrice":433.43},{"title":"Convert 2031","notional":603750000,"maturity":"2031-03-16","coupon":0.875,"strikePrice":232.72},{"title":"Convert 2032","notional":800000000,"maturity":"2032-06-16","coupon":2.25,"strikePrice":204.33}],"source":"https://www.strategy.com/debt (live data, updated 2026-07-16)","asOfDate":"2026-07-16"},"bankruptcy":{"bankruptcyPrice":7956.801279962076,"bufferPct":87.29736860428474,"currentPrice":62639,"coin":"btc"},"liquidityRisk":{"daysToExit":184.20722264546393,"level":3,"label":"> 30 days"},"sellability":"restricted","lockStatus":"free","mnavPremium":2.1,"risk":{"total":9,"level":"high","breakdown":{"leverage":1,"concentration":3,"liquidity":3,"reflexivity":2}},"notes":"Largest corporate BTC holder. Convertible notes are equity-settled (no forced BTC liquidation), but bankruptcy still possible if stock crashes and refinancing fails."},{"name":"BitMine Immersion","symbol":"BMNR.US","country":"US","primaryCoin":"ETH","holdings":{"btc":{"quantity":198,"entryValueUsd":0,"currentValueUsd":12402522,"avgCost":null,"percentOfCirculating":0.001,"unrealizedUsd":null,"unrealizedPct":null},"eth":{"quantity":5770038,"entryValueUsd":0,"currentValueUsd":10506662194.2,"avgCost":null,"percentOfCirculating":4.781,"unrealizedUsd":null,"unrealizedPct":null}},"totalCurrentValueUsd":10519064716.2,"totalEntryValueUsd":null,"totalUnrealizedPnlUsd":null,"totalUnrealizedPnlPct":null,"debt":{"totalDebtUsd":null,"convertibleNotesUsd":null,"otherDebtUsd":null,"hasLeverage":false,"notes":[],"source":"Limited public disclosures. Micro-cap company.","asOfDate":"2025-Q1"},"bankruptcy":{"bankruptcyPrice":null,"bufferPct":null,"reason":"No leverage / no forced liquidation price"},"liquidityRisk":{"daysToExit":102.370540444508,"level":3,"label":"> 30 days"},"sellability":"restricted","lockStatus":"restricted","mnavPremium":null,"risk":{"total":6,"level":"medium","breakdown":{"leverage":0,"concentration":2,"liquidity":3,"reflexivity":1}},"notes":"Extremely large reported ETH position (4.8% of circulating supply) - data may include custodied/client assets. Verify independently."},{"name":"Twenty One Capital","symbol":"XXI.US","country":"US","primaryCoin":"BTC","holdings":{"btc":{"quantity":43514,"entryValueUsd":0,"currentValueUsd":2725673446,"avgCost":null,"percentOfCirculating":0.207,"unrealizedUsd":null,"unrealizedPct":null}},"totalCurrentValueUsd":2725673446,"totalEntryValueUsd":null,"totalUnrealizedPnlUsd":null,"totalUnrealizedPnlPct":null,"debt":{"totalDebtUsd":null,"convertibleNotesUsd":null,"otherDebtUsd":null,"hasLeverage":false,"notes":[],"source":"New entity (2025 SPAC merger via Cantor Equity Partners). Limited public debt disclosures.","asOfDate":"2025-Q4"},"bankruptcy":{"bankruptcyPrice":null,"bufferPct":null,"reason":"No leverage / no forced liquidation price"},"liquidityRisk":{"daysToExit":9.49968070420991,"level":2,"label":"7-30 days"},"sellability":"restricted","lockStatus":"free","mnavPremium":null,"risk":{"total":6,"level":"medium","breakdown":{"leverage":0,"concentration":3,"liquidity":2,"reflexivity":1}},"notes":"Backed by Tether, SoftBank, Bitfinex. Primarily equity-funded. Launched with ~31,500 BTC at inception."},{"name":"Metaplanet","symbol":"3350.T","country":"JP","primaryCoin":"BTC","holdings":{"btc":{"quantity":43000,"entryValueUsd":3810765023.48,"currentValueUsd":2693477000,"avgCost":88622.44240651163,"percentOfCirculating":0.205,"unrealizedUsd":-1117288023.48,"unrealizedPct":-29.31925785494089}},"totalCurrentValueUsd":2693477000,"totalEntryValueUsd":3810765023.48,"totalUnrealizedPnlUsd":-1117288023.48,"totalUnrealizedPnlPct":-29.31925785494089,"debt":{"totalDebtUsd":690000000,"convertibleNotesUsd":690000000,"otherDebtUsd":0,"hasLeverage":true,"notes":[{"title":"Zero-coupon bonds (multiple tranches)","notional":690000000,"maturity":"2025-2027 (various)","coupon":0,"strikePrice":null}],"source":"Metaplanet IR press releases, JPY bonds converted at ~150 JPY/USD. Data estimated from multiple issuances.","asOfDate":"2025-Q3"},"bankruptcy":{"bankruptcyPrice":16046.511627906977,"bufferPct":74.38255459393193,"currentPrice":62639,"coin":"btc"},"liquidityRisk":{"daysToExit":9.387467717999405,"level":2,"label":"7-30 days"},"sellability":"restricted","lockStatus":"free","mnavPremium":2.5,"risk":{"total":9,"level":"high","breakdown":{"leverage":2,"concentration":3,"liquidity":2,"reflexivity":2}},"notes":"Japanese listed company. Issued multiple zero-coupon bonds to buy BTC. High mNAV premium. Aggressive accumulation strategy."},{"name":"MARA Holdings (Marathon Digital)","symbol":"MARA.US","country":"US","primaryCoin":"BTC","holdings":{"btc":{"quantity":35303,"entryValueUsd":0,"currentValueUsd":2211344617,"avgCost":null,"percentOfCirculating":0.168,"unrealizedUsd":null,"unrealizedPct":null}},"totalCurrentValueUsd":2211344617,"totalEntryValueUsd":null,"totalUnrealizedPnlUsd":null,"totalUnrealizedPnlPct":null,"debt":{"totalDebtUsd":1350000000,"convertibleNotesUsd":1350000000,"otherDebtUsd":0,"hasLeverage":true,"notes":[{"title":"0% Convertible Notes due 2030","notional":850000000,"maturity":"2030-03-01","coupon":0,"strikePrice":null},{"title":"0% Convertible Notes due 2031","notional":500000000,"maturity":"2031-03-01","coupon":0,"strikePrice":null}],"source":"MARA SEC filings (8-K, 2024). Approximate values from public issuance announcements.","asOfDate":"2025-Q1"},"bankruptcy":{"bankruptcyPrice":38240.376171996715,"bufferPct":38.95117072112148,"currentPrice":62639,"coin":"btc"},"liquidityRisk":{"daysToExit":7.707110996477513,"level":2,"label":"7-30 days"},"sellability":"restricted","lockStatus":"free","mnavPremium":1.3,"risk":{"total":9,"level":"high","breakdown":{"leverage":3,"concentration":3,"liquidity":2,"reflexivity":1}},"notes":"BTC miner + treasury company. Revenue from mining operations partially offsets debt service."},{"name":"Galaxy Digital","symbol":"GLXY.US","country":"US","primaryCoin":"BTC","holdings":{"btc":{"quantity":25723,"entryValueUsd":2282988000,"currentValueUsd":1611262997,"avgCost":88752.78933250399,"percentOfCirculating":0.122,"unrealizedUsd":-671725003,"unrealizedPct":-29.423063239929427},"eth":{"quantity":61137,"entryValueUsd":180946000,"currentValueUsd":111324363.30000001,"avgCost":2959.680717078038,"percentOfCirculating":0.051,"unrealizedUsd":-69621636.69999999,"unrealizedPct":-38.476471820322075},"sol":{"quantity":775289,"entryValueUsd":132044000,"currentValueUsd":57541949.58,"avgCost":170.31584351125838,"percentOfCirculating":0.133,"unrealizedUsd":-74502050.42,"unrealizedPct":-56.42213990790948}},"totalCurrentValueUsd":1780129309.8799999,"totalEntryValueUsd":2595978000,"totalUnrealizedPnlUsd":-815848690.1200001,"totalUnrealizedPnlPct":-31.42741156203944,"debt":{"totalDebtUsd":500000000,"convertibleNotesUsd":0,"otherDebtUsd":500000000,"hasLeverage":true,"notes":[{"title":"Credit facility / corporate debt","notional":500000000,"maturity":"various","coupon":null,"strikePrice":null}],"source":"Galaxy Digital financial reports. Diversified digital asset firm with trading desk.","asOfDate":"2024-Q4"},"bankruptcy":{"bankruptcyPrice":19437.85717062551,"bufferPct":68.96844271041122,"currentPrice":62639,"coin":"btc"},"liquidityRisk":{"daysToExit":5.615670514188342,"level":1,"label":"1-7 days"},"sellability":"free","lockStatus":"free","mnavPremium":0.9,"risk":{"total":5,"level":"medium","breakdown":{"leverage":2,"concentration":2,"liquidity":1,"reflexivity":0}},"notes":"Diversified crypto firm (trading, lending, mining, investments). Multi-asset holdings. Not a pure treasury play."},{"name":"SharpLink Gaming","symbol":"SBET.US","country":"US","primaryCoin":"ETH","holdings":{"eth":{"quantity":868699,"entryValueUsd":0,"currentValueUsd":1581814009.1000001,"avgCost":null,"percentOfCirculating":0.72,"unrealizedUsd":null,"unrealizedPct":null}},"totalCurrentValueUsd":1581814009.1000001,"totalEntryValueUsd":null,"totalUnrealizedPnlUsd":null,"totalUnrealizedPnlPct":null,"debt":{"totalDebtUsd":null,"convertibleNotesUsd":null,"otherDebtUsd":null,"hasLeverage":false,"notes":[],"source":"Limited public disclosures. Pivoted to ETH treasury strategy 2024.","asOfDate":"2024-Q4"},"bankruptcy":{"bankruptcyPrice":null,"bufferPct":null,"reason":"No leverage / no forced liquidation price"},"liquidityRisk":{"daysToExit":15.412235779661009,"level":2,"label":"7-30 days"},"sellability":"restricted","lockStatus":"restricted","mnavPremium":null,"risk":{"total":6,"level":"medium","breakdown":{"leverage":0,"concentration":3,"liquidity":2,"reflexivity":1}},"notes":"Gaming/sports betting company that pivoted to ETH treasury. Micro-cap."},{"name":"Coinbase Global","symbol":"COIN.US","country":"US","primaryCoin":"BTC","holdings":{"btc":{"quantity":16492,"entryValueUsd":1156722999,"currentValueUsd":1033042388,"avgCost":70138.43069366965,"percentOfCirculating":0.079,"unrealizedUsd":-123680611,"unrealizedPct":-10.692327472257686},"eth":{"quantity":150193,"entryValueUsd":357116000,"currentValueUsd":273486433.7,"avgCost":2377.7140079764035,"percentOfCirculating":0.124,"unrealizedUsd":-83629566.30000001,"unrealizedPct":-23.418039600577966}},"totalCurrentValueUsd":1306528821.7,"totalEntryValueUsd":1513838999,"totalUnrealizedPnlUsd":-207310177.29999995,"totalUnrealizedPnlPct":-13.69433456509862,"debt":{"totalDebtUsd":4300000000,"convertibleNotesUsd":1300000000,"otherDebtUsd":3000000000,"hasLeverage":true,"notes":[{"title":"0.50% Convertible Notes due 2026","notional":1300000000,"maturity":"2026-06-01","coupon":0.5,"strikePrice":null},{"title":"Senior Notes (various)","notional":3000000000,"maturity":"2028-2031","coupon":null,"strikePrice":null}],"source":"Coinbase 10-K 2024. Large exchange with diversified revenue.","asOfDate":"2024-Q4"},"bankruptcy":{"bankruptcyPrice":null,"bufferPct":null,"reason":"Debt exceeds crypto holdings 3x+ (company has non-crypto revenue)"},"liquidityRisk":{"daysToExit":3.6004213396568883,"level":1,"label":"1-7 days"},"sellability":"free","lockStatus":"free","mnavPremium":null,"risk":{"total":6,"level":"medium","breakdown":{"leverage":3,"concentration":1,"liquidity":1,"reflexivity":1}},"notes":"Largest US crypto exchange. Holdings are corporate treasury, not primary business model. $4.3B debt offset by substantial revenue ($5B+ annual)."},{"name":"Riot Platforms","symbol":"RIOT.US","country":"US","primaryCoin":"BTC","holdings":{"btc":{"quantity":15680,"entryValueUsd":0,"currentValueUsd":982179520,"avgCost":null,"percentOfCirculating":0.075,"unrealizedUsd":null,"unrealizedPct":null}},"totalCurrentValueUsd":982179520,"totalEntryValueUsd":null,"totalUnrealizedPnlUsd":null,"totalUnrealizedPnlPct":null,"debt":{"totalDebtUsd":460000000,"convertibleNotesUsd":460000000,"otherDebtUsd":0,"hasLeverage":true,"notes":[{"title":"0.75% Convertible Notes due 2030","notional":460000000,"maturity":"2030-01-15","coupon":0.75,"strikePrice":null}],"source":"Riot 8-K filing Dec 2024. Data estimated.","asOfDate":"2024-Q4"},"bankruptcy":{"bankruptcyPrice":29336.73469387755,"bufferPct":53.16538467428031,"currentPrice":62639,"coin":"btc"},"liquidityRisk":{"daysToExit":3.4231510190286207,"level":1,"label":"1-7 days"},"sellability":"free","lockStatus":"free","mnavPremium":0.9,"risk":{"total":6,"level":"medium","breakdown":{"leverage":2,"concentration":3,"liquidity":1,"reflexivity":0}},"notes":"BTC miner with HODL strategy. Has mining revenue stream. Relatively conservative leverage."},{"name":"CleanSpark","symbol":"CLSK.US","country":"US","primaryCoin":"BTC","holdings":{"btc":{"quantity":13470,"entryValueUsd":0,"currentValueUsd":843747330,"avgCost":null,"percentOfCirculating":0.064,"unrealizedUsd":null,"unrealizedPct":null}},"totalCurrentValueUsd":843747330,"totalEntryValueUsd":null,"totalUnrealizedPnlUsd":null,"totalUnrealizedPnlPct":null,"debt":{"totalDebtUsd":550000000,"convertibleNotesUsd":550000000,"otherDebtUsd":0,"hasLeverage":true,"notes":[{"title":"0% Convertible Notes due 2030","notional":550000000,"maturity":"2030-06-15","coupon":0,"strikePrice":null}],"source":"CleanSpark 8-K filing 2024. Data estimated.","asOfDate":"2024-Q4"},"bankruptcy":{"bankruptcyPrice":40831.47735708983,"bufferPct":34.81460853926494,"currentPrice":62639,"coin":"btc"},"liquidityRisk":{"daysToExit":2.940678840964,"level":1,"label":"1-7 days"},"sellability":"free","lockStatus":"free","mnavPremium":1,"risk":{"total":7,"level":"high","breakdown":{"leverage":3,"concentration":3,"liquidity":1,"reflexivity":0}},"notes":"BTC miner. Revenue from mining operations. Moderate leverage."},{"name":"Bit Digital","symbol":"BTBT.US","country":"US","primaryCoin":"ETH","holdings":{"btc":{"quantity":3.9999999999999996,"entryValueUsd":348410,"currentValueUsd":250555.99999999997,"avgCost":87102.50000000001,"percentOfCirculating":0,"unrealizedUsd":-97854.00000000003,"unrealizedPct":-28.08587583594042},"eth":{"quantity":158461.75,"entryValueUsd":450300476,"currentValueUsd":288543000.575,"avgCost":2841.6982394805054,"percentOfCirculating":0.131,"unrealizedUsd":-161757475.425,"unrealizedPct":-35.92211957266508}},"totalCurrentValueUsd":288793556.575,"totalEntryValueUsd":450648886,"totalUnrealizedPnlUsd":-161855329.425,"totalUnrealizedPnlPct":-35.91606114055722,"debt":{"totalDebtUsd":0,"convertibleNotesUsd":0,"otherDebtUsd":0,"hasLeverage":false,"notes":[],"source":"Bit Digital 10-K filings. Primarily equity funded.","asOfDate":"2024-Q4"},"bankruptcy":{"bankruptcyPrice":null,"bufferPct":null,"reason":"No leverage / no forced liquidation price"},"liquidityRisk":{"daysToExit":2.8113878950680244,"level":1,"label":"1-7 days"},"sellability":"restricted","lockStatus":"restricted","mnavPremium":0.8,"risk":{"total":3,"level":"low","breakdown":{"leverage":0,"concentration":2,"liquidity":1,"reflexivity":0}},"notes":"Crypto miner + ETH staker. Revenue from staking + GPU computing. No significant debt."},{"name":"DeFi Development Corp","symbol":"DFDV.US","country":"US","primaryCoin":"SOL","holdings":{"sol":{"quantity":2223074,"entryValueUsd":0,"currentValueUsd":164996552.28,"avgCost":null,"percentOfCirculating":0.382,"unrealizedUsd":null,"unrealizedPct":null}},"totalCurrentValueUsd":164996552.28,"totalEntryValueUsd":null,"totalUnrealizedPnlUsd":null,"totalUnrealizedPnlPct":null,"debt":{"totalDebtUsd":null,"convertibleNotesUsd":null,"otherDebtUsd":null,"hasLeverage":false,"notes":[],"source":"Newly renamed/restructured company. Limited historical filings.","asOfDate":"2025-Q1"},"bankruptcy":{"bankruptcyPrice":null,"bufferPct":null,"reason":"No leverage / no forced liquidation price"},"liquidityRisk":{"daysToExit":10.596611274116707,"level":2,"label":"7-30 days"},"sellability":"restricted","lockStatus":"restricted","mnavPremium":null,"risk":{"total":6,"level":"medium","breakdown":{"leverage":0,"concentration":3,"liquidity":2,"reflexivity":1}},"notes":"Formerly Janover. Pivoted to SOL treasury + staking strategy in early 2025."},{"name":"Upexi","symbol":"UPXI.US","country":"US","primaryCoin":"SOL","holdings":{"sol":{"quantity":2173204,"entryValueUsd":325341218,"currentValueUsd":161295200.88,"avgCost":149.7057883199184,"percentOfCirculating":0.373,"unrealizedUsd":-164046017.12,"unrealizedPct":-50.42275864351132}},"totalCurrentValueUsd":161295200.88,"totalEntryValueUsd":325341218,"totalUnrealizedPnlUsd":-164046017.12,"totalUnrealizedPnlPct":-50.42275864351132,"debt":{"totalDebtUsd":0,"convertibleNotesUsd":0,"otherDebtUsd":0,"hasLeverage":false,"notes":[],"source":"Upexi press releases. Funded via equity raise ($100M+).","asOfDate":"2025-Q2"},"bankruptcy":{"bankruptcyPrice":null,"bufferPct":null,"reason":"No leverage / no forced liquidation price"},"liquidityRisk":{"daysToExit":10.358898537500561,"level":2,"label":"7-30 days"},"sellability":"restricted","lockStatus":"restricted","mnavPremium":2,"risk":{"total":7,"level":"high","breakdown":{"leverage":0,"concentration":3,"liquidity":2,"reflexivity":2}},"notes":"Consumer products company that pivoted to SOL treasury. Funded by equity raise. High mNAV premium."},{"name":"SOL Strategies","symbol":"HODL.CN","country":"CA","primaryCoin":"SOL","holdings":{"sol":{"quantity":533040,"entryValueUsd":0,"currentValueUsd":39562228.8,"avgCost":null,"percentOfCirculating":0.092,"unrealizedUsd":null,"unrealizedPct":null}},"totalCurrentValueUsd":39562228.8,"totalEntryValueUsd":null,"totalUnrealizedPnlUsd":null,"totalUnrealizedPnlPct":null,"debt":{"totalDebtUsd":25000000,"convertibleNotesUsd":25000000,"otherDebtUsd":0,"hasLeverage":true,"notes":[{"title":"Convertible Note","notional":25000000,"maturity":"2026","coupon":null,"strikePrice":null}],"source":"SOL Strategies press releases. CAD-denominated, converted at ~0.73 USD/CAD.","asOfDate":"2025-Q1"},"bankruptcy":{"bankruptcyPrice":46.90079543749062,"bufferPct":36.808413584625946,"currentPrice":74.22,"coin":"sol"},"liquidityRisk":{"daysToExit":2.5408140590709842,"level":1,"label":"1-7 days"},"sellability":"restricted","lockStatus":"restricted","mnavPremium":1.5,"risk":{"total":8,"level":"high","breakdown":{"leverage":3,"concentration":3,"liquidity":1,"reflexivity":1}},"notes":"Canadian-listed SOL treasury + validator operator. Previously named Cypherpunk Holdings."},{"name":"Semler Scientific","symbol":"SMLR.US","country":"US","primaryCoin":"BTC","holdings":{"btc":{"quantity":0,"entryValueUsd":0,"currentValueUsd":0,"avgCost":null,"percentOfCirculating":0,"unrealizedUsd":null,"unrealizedPct":null}},"totalCurrentValueUsd":0,"totalEntryValueUsd":null,"totalUnrealizedPnlUsd":null,"totalUnrealizedPnlPct":null,"debt":{"totalDebtUsd":85000000,"convertibleNotesUsd":85000000,"otherDebtUsd":0,"hasLeverage":true,"notes":[{"title":"Convertible Notes (various)","notional":85000000,"maturity":"2029","coupon":null,"strikePrice":null}],"source":"Semler Scientific press releases and 8-K filings 2024. Data estimated.","asOfDate":"2024-Q4"},"bankruptcy":{"bankruptcyPrice":null,"bufferPct":null,"reason":"Debt exceeds crypto holdings 3x+ (company has non-crypto revenue)"},"liquidityRisk":{"daysToExit":0,"level":0,"label":"< 1 day"},"sellability":"free","lockStatus":"free","mnavPremium":1.5,"risk":{"total":4,"level":"medium","breakdown":{"leverage":0,"concentration":3,"liquidity":0,"reflexivity":1}},"notes":"Medical device company that adopted BTC treasury strategy in 2024. Small position relative to other DAT companies."}],"top3Vulnerable":[{"name":"Strategy (MicroStrategy)","symbol":"MSTR.US","riskScore":9,"riskLevel":"high","primaryReason":"Concentrated single-coin exposure; Liquidity constraints; Elevated mNAV premium"},{"name":"Metaplanet","symbol":"3350.T","riskScore":9,"riskLevel":"high","primaryReason":"High leverage; Concentrated single-coin exposure; Liquidity constraints; Elevated mNAV premium"},{"name":"MARA Holdings (Marathon Digital)","symbol":"MARA.US","riskScore":9,"riskLevel":"high","primaryReason":"High leverage; Concentrated single-coin exposure; Liquidity constraints"}],"disclaimer":"This analysis is for informational purposes only and does not constitute investment advice. Data may be stale or inaccurate. Verify independently before making decisions."};
+function fmt(n,d=0){if(n==null)return"\u2014";return n.toLocaleString("en-US",{maximumFractionDigits:d})}
+function fmtUsd(n){if(n==null)return"\u2014";if(Math.abs(n)>=1e9)return"$"+(n/1e9).toFixed(2)+"B";if(Math.abs(n)>=1e6)return"$"+(n/1e6).toFixed(1)+"M";return"$"+fmt(n)}
+function fmtPct(n){return n==null?"\u2014":n.toFixed(1)+"%"}
+
+document.getElementById("snap-date").textContent=new Date(DATA.generatedAt).toLocaleString();
+document.getElementById("gen-date").textContent=new Date(DATA.generatedAt).toLocaleString();
+document.getElementById("fetch-date").textContent=new Date(DATA.dataFetchedAt).toLocaleString();
+document.getElementById("total-val").textContent=fmtUsd(DATA.companies.reduce((s,c)=>s+c.totalCurrentValueUsd,0));
+document.getElementById("prices-display").innerHTML="BTC $"+fmt(DATA.prices.btc)+" | ETH $"+fmt(DATA.prices.eth)+" | SOL $"+fmt(DATA.prices.sol,2);
+
+let sortCol="riskTotal",sortDir=-1,activeFilter="all";
+function filterCompanies(){return DATA.companies.filter(c=>{if(activeFilter==="all")return true;if(activeFilter==="high-risk")return c.risk.total>=7;return c.primaryCoin.toLowerCase()===activeFilter})}
+
+function renderTable(){
+  const filtered=filterCompanies();
+  const rows=filtered.map((c,i)=>{const p=c.primaryCoin.toLowerCase();const h=c.holdings[p];return{rank:i+1,name:c.name,symbol:c.symbol,primaryCoin:c.primaryCoin.toUpperCase(),quantity:h?h.quantity:0,avgCost:h?h.avgCost:null,pctCirculating:h?h.percentOfCirculating:null,pnlPct:c.totalUnrealizedPnlPct,pnlUsd:c.totalUnrealizedPnlUsd,bankruptcyPrice:c.bankruptcy.bankruptcyPrice,bufferPct:c.bankruptcy.bufferPct,sellability:c.sellability,riskTotal:c.risk.total,riskLevel:c.risk.level,totalValue:c.totalCurrentValueUsd}});
+  rows.sort((a,b)=>{let va=a[sortCol],vb=b[sortCol];if(va==null)va=-Infinity;if(vb==null)vb=-Infinity;return(va>vb?1:va<vb?-1:0)*sortDir});
+  const tbody=document.getElementById("table-body");
+  tbody.innerHTML=rows.map((r,i)=>{
+    const cb='<span class="badge badge-'+r.primaryCoin.toLowerCase()+'">'+r.primaryCoin+"</span>";
+    const pc=r.pnlPct>0?"pnl-pos":r.pnlPct<0?"pnl-neg":"";
+    const rc="risk-"+r.riskLevel;
+    const sl=r.sellability==="free"?"\u2705 Free":r.sellability==="restricted"?"\u26A0\uFE0F Limited":"\u274C Difficult";
+    return "<tr><td>"+(i+1)+"</td><td><strong>"+r.name+'</strong><br><span style="color:var(--text-dim);font-size:.75rem">'+r.symbol+"</span></td><td>"+cb+"</td><td>"+fmt(r.quantity)+'<br><span style="color:var(--text-dim);font-size:.75rem">'+fmtUsd(r.totalValue)+"</span></td><td>"+(r.avgCost?"$"+fmt(r.avgCost):"\u2014")+"</td><td>"+(r.pctCirculating?r.pctCirculating.toFixed(3)+"%":"\u2014")+'</td><td class="'+pc+'">'+fmtPct(r.pnlPct)+"</td><td>"+(r.bankruptcyPrice?"$"+fmt(r.bankruptcyPrice):"N/A")+"</td><td>"+(r.bufferPct!=null?'<span class="'+(r.bufferPct>50?"pnl-pos":r.bufferPct>20?"":"pnl-neg")+'">'+r.bufferPct.toFixed(1)+"%</span>":"\u2014")+"</td><td>"+sl+'</td><td><span class="'+rc+'" style="font-weight:700">'+r.riskTotal+'/12</span><br><span class="'+rc+'" style="font-size:.75rem">'+r.riskLevel.toUpperCase()+"</span></td></tr>"
+  }).join("");
+}
+
+document.querySelectorAll("#main-table th").forEach(th=>{th.addEventListener("click",()=>{const col=th.dataset.col;if(!col)return;if(sortCol===col)sortDir*=-1;else{sortCol=col;sortDir=-1}renderTable()})});
+document.querySelectorAll(".filter-btn").forEach(btn=>{btn.addEventListener("click",()=>{document.querySelectorAll(".filter-btn").forEach(b=>b.classList.remove("active"));btn.classList.add("active");activeFilter=btn.dataset.filter;renderTable()})});
+
+document.getElementById("vulnerable-section").innerHTML=DATA.top3Vulnerable.map((v,i)=>'<div class="vulnerable-card"><h4>#'+(i+1)+" "+v.name+" ("+v.symbol+") \u2014 Risk "+v.riskScore+'/12</h4><div class="reason">'+v.primaryReason+"</div></div>").join("");
+
+function renderBarChart(id,data,colorFn){
+  const el=document.getElementById(id);if(!el)return;
+  const valid=data.filter(d=>d.value!=null&&d.value>0);
+  if(!valid.length){el.innerHTML='<p style="color:var(--text-dim)">No data available</p>';return}
+  const mx=Math.max(...valid.map(d=>d.value));
+  el.innerHTML=valid.map(d=>{const pct=Math.max(2,(d.value/mx)*100);const col=colorFn?colorFn(d):"var(--accent)";return'<div class="bar-row"><div class="bar-label">'+d.label+'</div><div class="bar-track"><div class="bar-fill" style="width:'+pct+"%;background:"+col+'">'+(pct>20?d.display:"")+'</div></div><div class="bar-value">'+(pct<=20?d.display:"")+"</div></div>"}).join("");
+}
+
+renderBarChart("chart-holdings",DATA.companies.map(c=>({label:c.symbol.split(".")[0],value:c.totalCurrentValueUsd,display:fmtUsd(c.totalCurrentValueUsd)})),d=>d.value>10e9?"var(--orange)":d.value>1e9?"var(--accent)":"#6b7280");
+
+const bd=DATA.companies.filter(c=>c.bankruptcy.bufferPct!=null).sort((a,b)=>a.bankruptcy.bufferPct-b.bankruptcy.bufferPct).map(c=>({label:c.symbol.split(".")[0],value:c.bankruptcy.bufferPct,display:c.bankruptcy.bufferPct.toFixed(1)+"%"}));
+renderBarChart("chart-buffer",bd,d=>d.value<50?"var(--red)":d.value<70?"var(--yellow)":"var(--green)");
+
+renderBarChart("chart-risk",[...DATA.companies].sort((a,b)=>b.risk.total-a.risk.total).map(c=>({label:c.symbol.split(".")[0],value:c.risk.total,display:c.risk.total+"/12"})),d=>d.value>=10?"var(--red)":d.value>=7?"var(--orange)":d.value>=4?"var(--yellow)":"var(--green)");
+
+// Key findings
+const leveraged=DATA.companies.filter(c=>c.debt&&c.debt.hasLeverage);
+const totalDebt=leveraged.reduce((s,c)=>s+(c.debt?.totalDebtUsd||0),0);
+const findings=document.getElementById("findings");
+findings.innerHTML=`
+<ul style="margin-left:20px">
+<li><strong>${DATA.companies.length} companies</strong> hold combined <strong>${fmtUsd(DATA.companies.reduce((s,c)=>s+c.totalCurrentValueUsd,0))}</strong> in crypto treasury assets</li>
+<li><strong>${leveraged.length} companies</strong> use leverage (total debt: <strong>${fmtUsd(totalDebt)}</strong>)</li>
+<li><strong>Strategy (MSTR)</strong> dominates with ${((DATA.companies[0]?.totalCurrentValueUsd||0)/DATA.companies.reduce((s,c)=>s+c.totalCurrentValueUsd,0)*100).toFixed(0)}% of total holdings value</li>
+<li><strong>Highest leverage risk:</strong> Metaplanet (3350.T) with ${DATA.companies.find(c=>c.symbol==="3350.T")?.bankruptcy.bufferPct?.toFixed(0)||"?"}% buffer to bankruptcy price</li>
+<li><strong>Most concentrated:</strong> All BTC-only holders score 3/3 on concentration risk</li>
+<li><strong>Liquidity concern:</strong> Large holders (MSTR, BMNR) would take 30+ days to exit at 1% daily volume</li>
+</ul>`;
+
+renderTable();
+</script>
+</body>
+</html>

@@ -1,0 +1,254 @@
+{
+  "companies": {
+    "MSTR.US": {
+      "name": "Strategy",
+      "symbol": "MSTR.US",
+      "country": "US",
+      "holdings": {
+        "btc": {
+          "quantity": 843775,
+          "entryValueUsd": 63684761900,
+          "currentValueUsd": 53229449820.591576,
+          "percentOfCirculating": 4.018
+        }
+      }
+    },
+    "XXI.US": {
+      "name": "Twenty One Capital",
+      "symbol": "XXI.US",
+      "country": "US",
+      "holdings": {
+        "btc": {
+          "quantity": 43514,
+          "entryValueUsd": 0,
+          "currentValueUsd": 2745075736.4145913,
+          "percentOfCirculating": 0.207
+        }
+      }
+    },
+    "3350.T": {
+      "name": "Metaplanet",
+      "symbol": "3350.T",
+      "country": "JP",
+      "holdings": {
+        "btc": {
+          "quantity": 43000,
+          "entryValueUsd": 3810765023.48,
+          "currentValueUsd": 2712650104.92778,
+          "percentOfCirculating": 0.205
+        }
+      }
+    },
+    "MARA.US": {
+      "name": "MARA Holdings",
+      "symbol": "MARA.US",
+      "country": "US",
+      "holdings": {
+        "btc": {
+          "quantity": 35303,
+          "entryValueUsd": 0,
+          "currentValueUsd": 2227085736.1457076,
+          "percentOfCirculating": 0.168
+        }
+      }
+    },
+    "GLXY.US": {
+      "name": "Galaxy Digital Holdings Ltd",
+      "symbol": "GLXY.US",
+      "country": "US",
+      "holdings": {
+        "btc": {
+          "quantity": 25723,
+          "entryValueUsd": 2282988000,
+          "currentValueUsd": 1622732526.7222626,
+          "percentOfCirculating": 0.122
+        },
+        "eth": {
+          "quantity": 61137,
+          "entryValueUsd": 180946000,
+          "currentValueUsd": 112326151.08604342,
+          "percentOfCirculating": 0.051
+        },
+        "sol": {
+          "quantity": 775289,
+          "entryValueUsd": 132044000,
+          "currentValueUsd": 57931113.26426971,
+          "percentOfCirculating": 0.133
+        }
+      }
+    },
+    "COIN.US": {
+      "name": "Coinbase Global",
+      "symbol": "COIN.US",
+      "country": "US",
+      "holdings": {
+        "btc": {
+          "quantity": 16492,
+          "entryValueUsd": 1156722999,
+          "currentValueUsd": 1040395942.5690454,
+          "percentOfCirculating": 0.079
+        },
+        "eth": {
+          "quantity": 150193,
+          "entryValueUsd": 357116000,
+          "currentValueUsd": 275947488.5922783,
+          "percentOfCirculating": 0.124
+        }
+      }
+    },
+    "RIOT.US": {
+      "name": "Riot Platforms",
+      "symbol": "RIOT.US",
+      "country": "US",
+      "holdings": {
+        "btc": {
+          "quantity": 15680,
+          "entryValueUsd": 0,
+          "currentValueUsd": 989171015.0062232,
+          "percentOfCirculating": 0.075
+        }
+      }
+    },
+    "CLSK.US": {
+      "name": "CleanSpark",
+      "symbol": "CLSK.US",
+      "country": "US",
+      "holdings": {
+        "btc": {
+          "quantity": 13470,
+          "entryValueUsd": 0,
+          "currentValueUsd": 849753416.5901674,
+          "percentOfCirculating": 0.064
+        }
+      }
+    },
+    "BMNR.US": {
+      "name": "BitMine Immersion",
+      "symbol": "BMNR.US",
+      "country": "US",
+      "holdings": {
+        "btc": {
+          "quantity": 198,
+          "entryValueUsd": 0,
+          "currentValueUsd": 12490807.459900012,
+          "percentOfCirculating": 0.001
+        },
+        "eth": {
+          "quantity": 5770038,
+          "entryValueUsd": 0,
+          "currentValueUsd": 10601209744.675266,
+          "percentOfCirculating": 4.781
+        }
+      }
+    },
+    "BTBT.US": {
+      "name": "Bit Digital",
+      "symbol": "BTBT.US",
+      "country": "US",
+      "holdings": {
+        "btc": {
+          "quantity": 3.9999999999999996,
+          "entryValueUsd": 348410,
+          "currentValueUsd": 252339.54464444466,
+          "percentOfCirculating": 0
+        },
+        "eth": {
+          "quantity": 158461.75,
+          "entryValueUsd": 450300476,
+          "currentValueUsd": 291139546.78605163,
+          "percentOfCirculating": 0.131
+        }
+      }
+    },
+    "SMLR.US": {
+      "name": "Semler Scientific (acquired by Strive)",
+      "symbol": "SMLR.US",
+      "country": "US",
+      "holdings": {
+        "btc": {
+          "quantity": 0,
+          "entryValueUsd": 0,
+          "currentValueUsd": 0,
+          "percentOfCirculating": 0
+        }
+      }
+    },
+    "SBET.US": {
+      "name": "SharpLink",
+      "symbol": "SBET.US",
+      "country": "US",
+      "holdings": {
+        "eth": {
+          "quantity": 868699,
+          "entryValueUsd": 0,
+          "currentValueUsd": 1596048466.9233823,
+          "percentOfCirculating": 0.72
+        }
+      }
+    },
+    "DFDV.US": {
+      "name": "DeFi Development Corp.",
+      "symbol": "DFDV.US",
+      "country": "US",
+      "holdings": {
+        "sol": {
+          "quantity": 2223074,
+          "entryValueUsd": 0,
+          "currentValueUsd": 166112445.4091998,
+          "percentOfCirculating": 0.382
+        }
+      }
+    },
+    "UPXI.US": {
+      "name": "Upexi",
+      "symbol": "UPXI.US",
+      "country": "US",
+      "holdings": {
+        "sol": {
+          "quantity": 2173204,
+          "entryValueUsd": 325341218,
+          "currentValueUsd": 162386061.28858268,
+          "percentOfCirculating": 0.373
+        }
+      }
+    },
+    "HODL.CN": {
+      "name": "SOL Strategies",
+      "symbol": "HODL.CN",
+      "country": "CA",
+      "holdings": {
+        "sol": {
+          "quantity": 533040,
+          "entryValueUsd": 0,
+          "currentValueUsd": 39829793.295643725,
+          "percentOfCirculating": 0.092
+        }
+      }
+    }
+  },
+  "prices": {
+    "btc": 63090,
+    "eth": 1837.28,
+    "sol": 74.72
+  },
+  "marketData": {
+    "btc": {
+      "marketCap": 1265360537041.8726,
+      "volume24h": 25440731270.39853
+    },
+    "eth": {
+      "marketCap": 221687814160.37518,
+      "volume24h": 10315205983.760197
+    },
+    "sol": {
+      "marketCap": 43527931619.67337,
+      "volume24h": 1526394389.0377746
+    }
+  },
+  "circulatingSupply": {
+    "btc": 20999875.55998009,
+    "eth": 120686843.75653629,
+    "sol": 582561728.3950617
+  },
+  "fetchedAt": "2026-07-17T10:40:13.836Z"
+}

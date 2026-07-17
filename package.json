@@ -1,0 +1,12 @@
+{
+  "name": "dat-analysis",
+  "version": "1.0.0",
+  "description": "Digital Asset Treasury Companies - Risk Analysis Dashboard",
+  "private": false,
+  "scripts": {
+    "update": "node scripts/update.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

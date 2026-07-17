@@ -1,0 +1,320 @@
+{
+  "metadata": {
+    "description": "Curated debt/leverage research data for DAT companies",
+    "lastUpdated": "2026-07-17",
+    "sources": "Strategy.com/debt (live), SEC EDGAR filings, company IR pages, training knowledge (pre-2025 filings)",
+    "disclaimer": "Debt data may be stale. Verify against latest SEC filings before making decisions."
+  },
+  "companies": {
+    "MSTR.US": {
+      "name": "Strategy (MicroStrategy)",
+      "symbol": "MSTR.US",
+      "primaryCoin": "BTC",
+      "debt": {
+        "totalDebtUsd": 6713750000,
+        "convertibleNotesUsd": 6713750000,
+        "otherDebtUsd": 0,
+        "hasLeverage": true,
+        "notes": [
+          {"title": "Convert 2028", "notional": 1010000000, "maturity": "2028-09-16", "coupon": 0.625, "strikePrice": 183.19},
+          {"title": "Convert 2029", "notional": 1500000000, "maturity": "2029-12-02", "coupon": 0, "strikePrice": 672.40},
+          {"title": "Convert 2030 A", "notional": 800000000, "maturity": "2030-03-16", "coupon": 0.625, "strikePrice": 149.77},
+          {"title": "Convert 2030 B", "notional": 2000000000, "maturity": "2030-03-02", "coupon": 0, "strikePrice": 433.43},
+          {"title": "Convert 2031", "notional": 603750000, "maturity": "2031-03-16", "coupon": 0.875, "strikePrice": 232.72},
+          {"title": "Convert 2032", "notional": 800000000, "maturity": "2032-06-16", "coupon": 2.25, "strikePrice": 204.33}
+        ],
+        "source": "https://www.strategy.com/debt (live data, updated 2026-07-16)",
+        "asOfDate": "2026-07-16"
+      },
+      "lockStatus": "free",
+      "lockReason": "BTC held in custody, no staking/lock constraints",
+      "mnavPremium": 2.1,
+      "mnavSource": "Estimated based on historical MSTR premium patterns",
+      "notes": "Largest corporate BTC holder. Convertible notes are equity-settled (no forced BTC liquidation), but bankruptcy still possible if stock crashes and refinancing fails."
+    },
+    "XXI.US": {
+      "name": "Twenty One Capital",
+      "symbol": "XXI.US",
+      "primaryCoin": "BTC",
+      "debt": {
+        "totalDebtUsd": null,
+        "convertibleNotesUsd": null,
+        "otherDebtUsd": null,
+        "hasLeverage": false,
+        "notes": [],
+        "source": "New entity (2025 SPAC merger via Cantor Equity Partners). Limited public debt disclosures.",
+        "asOfDate": "2025-Q4"
+      },
+      "lockStatus": "free",
+      "lockReason": "Funded via SPAC equity + Tether/Bitfinex contributions",
+      "mnavPremium": null,
+      "mnavSource": "Insufficient trading history",
+      "notes": "Backed by Tether, SoftBank, Bitfinex. Primarily equity-funded. Launched with ~31,500 BTC at inception."
+    },
+    "3350.T": {
+      "name": "Metaplanet",
+      "symbol": "3350.T",
+      "primaryCoin": "BTC",
+      "debt": {
+        "totalDebtUsd": 690000000,
+        "convertibleNotesUsd": 690000000,
+        "otherDebtUsd": 0,
+        "hasLeverage": true,
+        "notes": [
+          {"title": "Zero-coupon bonds (multiple tranches)", "notional": 690000000, "maturity": "2025-2027 (various)", "coupon": 0, "strikePrice": null}
+        ],
+        "source": "Metaplanet IR press releases, JPY bonds converted at ~150 JPY/USD. Data estimated from multiple issuances.",
+        "asOfDate": "2025-Q3"
+      },
+      "lockStatus": "free",
+      "lockReason": "BTC held in custody (various custodians)",
+      "mnavPremium": 2.5,
+      "mnavSource": "Estimated; known to trade at significant premium on Tokyo exchange",
+      "notes": "Japanese listed company. Issued multiple zero-coupon bonds to buy BTC. High mNAV premium. Aggressive accumulation strategy."
+    },
+    "MARA.US": {
+      "name": "MARA Holdings (Marathon Digital)",
+      "symbol": "MARA.US",
+      "primaryCoin": "BTC",
+      "debt": {
+        "totalDebtUsd": 1350000000,
+        "convertibleNotesUsd": 1350000000,
+        "otherDebtUsd": 0,
+        "hasLeverage": true,
+        "notes": [
+          {"title": "0% Convertible Notes due 2030", "notional": 850000000, "maturity": "2030-03-01", "coupon": 0, "strikePrice": null},
+          {"title": "0% Convertible Notes due 2031", "notional": 500000000, "maturity": "2031-03-01", "coupon": 0, "strikePrice": null}
+        ],
+        "source": "MARA SEC filings (8-K, 2024). Approximate values from public issuance announcements.",
+        "asOfDate": "2025-Q1"
+      },
+      "lockStatus": "free",
+      "lockReason": "Combination of mined and purchased BTC; no staking constraints disclosed",
+      "mnavPremium": 1.3,
+      "mnavSource": "Estimated; MARA historically trades closer to NAV than MSTR",
+      "notes": "BTC miner + treasury company. Revenue from mining operations partially offsets debt service."
+    },
+    "RIOT.US": {
+      "name": "Riot Platforms",
+      "symbol": "RIOT.US",
+      "primaryCoin": "BTC",
+      "debt": {
+        "totalDebtUsd": 460000000,
+        "convertibleNotesUsd": 460000000,
+        "otherDebtUsd": 0,
+        "hasLeverage": true,
+        "notes": [
+          {"title": "0.75% Convertible Notes due 2030", "notional": 460000000, "maturity": "2030-01-15", "coupon": 0.75, "strikePrice": null}
+        ],
+        "source": "Riot 8-K filing Dec 2024. Data estimated.",
+        "asOfDate": "2024-Q4"
+      },
+      "lockStatus": "free",
+      "lockReason": "BTC held in custody, not staked",
+      "mnavPremium": 0.9,
+      "mnavSource": "Estimated; historically trades near/below NAV",
+      "notes": "BTC miner with HODL strategy. Has mining revenue stream. Relatively conservative leverage."
+    },
+    "CLSK.US": {
+      "name": "CleanSpark",
+      "symbol": "CLSK.US",
+      "primaryCoin": "BTC",
+      "debt": {
+        "totalDebtUsd": 550000000,
+        "convertibleNotesUsd": 550000000,
+        "otherDebtUsd": 0,
+        "hasLeverage": true,
+        "notes": [
+          {"title": "0% Convertible Notes due 2030", "notional": 550000000, "maturity": "2030-06-15", "coupon": 0, "strikePrice": null}
+        ],
+        "source": "CleanSpark 8-K filing 2024. Data estimated.",
+        "asOfDate": "2024-Q4"
+      },
+      "lockStatus": "free",
+      "lockReason": "Mined BTC held in custody",
+      "mnavPremium": 1.0,
+      "mnavSource": "Estimated",
+      "notes": "BTC miner. Revenue from mining operations. Moderate leverage."
+    },
+    "SMLR.US": {
+      "name": "Semler Scientific",
+      "symbol": "SMLR.US",
+      "primaryCoin": "BTC",
+      "debt": {
+        "totalDebtUsd": 85000000,
+        "convertibleNotesUsd": 85000000,
+        "otherDebtUsd": 0,
+        "hasLeverage": true,
+        "notes": [
+          {"title": "Convertible Notes (various)", "notional": 85000000, "maturity": "2029", "coupon": null, "strikePrice": null}
+        ],
+        "source": "Semler Scientific press releases and 8-K filings 2024. Data estimated.",
+        "asOfDate": "2024-Q4"
+      },
+      "lockStatus": "free",
+      "lockReason": "BTC held in custody",
+      "mnavPremium": 1.5,
+      "mnavSource": "Estimated; medical device company pivoting to BTC treasury",
+      "notes": "Medical device company that adopted BTC treasury strategy in 2024. Small position relative to other DAT companies."
+    },
+    "BMNR.US": {
+      "name": "BitMine Immersion",
+      "symbol": "BMNR.US",
+      "primaryCoin": "ETH",
+      "debt": {
+        "totalDebtUsd": null,
+        "convertibleNotesUsd": null,
+        "otherDebtUsd": null,
+        "hasLeverage": false,
+        "notes": [],
+        "source": "Limited public disclosures. Micro-cap company.",
+        "asOfDate": "2025-Q1"
+      },
+      "lockStatus": "restricted",
+      "lockReason": "Large ETH position (5.7M ETH) likely includes staked ETH with withdrawal queue constraints",
+      "mnavPremium": null,
+      "mnavSource": "Data unavailable",
+      "notes": "Extremely large reported ETH position (4.8% of circulating supply) - data may include custodied/client assets. Verify independently."
+    },
+    "SBET.US": {
+      "name": "SharpLink Gaming",
+      "symbol": "SBET.US",
+      "primaryCoin": "ETH",
+      "debt": {
+        "totalDebtUsd": null,
+        "convertibleNotesUsd": null,
+        "otherDebtUsd": null,
+        "hasLeverage": false,
+        "notes": [],
+        "source": "Limited public disclosures. Pivoted to ETH treasury strategy 2024.",
+        "asOfDate": "2024-Q4"
+      },
+      "lockStatus": "restricted",
+      "lockReason": "ETH may be partially staked for yield generation",
+      "mnavPremium": null,
+      "mnavSource": "Data unavailable",
+      "notes": "Gaming/sports betting company that pivoted to ETH treasury. Micro-cap."
+    },
+    "BTBT.US": {
+      "name": "Bit Digital",
+      "symbol": "BTBT.US",
+      "primaryCoin": "ETH",
+      "debt": {
+        "totalDebtUsd": 0,
+        "convertibleNotesUsd": 0,
+        "otherDebtUsd": 0,
+        "hasLeverage": false,
+        "notes": [],
+        "source": "Bit Digital 10-K filings. Primarily equity funded.",
+        "asOfDate": "2024-Q4"
+      },
+      "lockStatus": "restricted",
+      "lockReason": "ETH staking operations - ETH is staked for validator rewards, subject to withdrawal queue",
+      "mnavPremium": 0.8,
+      "mnavSource": "Estimated",
+      "notes": "Crypto miner + ETH staker. Revenue from staking + GPU computing. No significant debt."
+    },
+    "DFDV.US": {
+      "name": "DeFi Development Corp",
+      "symbol": "DFDV.US",
+      "primaryCoin": "SOL",
+      "debt": {
+        "totalDebtUsd": null,
+        "convertibleNotesUsd": null,
+        "otherDebtUsd": null,
+        "hasLeverage": false,
+        "notes": [],
+        "source": "Newly renamed/restructured company. Limited historical filings.",
+        "asOfDate": "2025-Q1"
+      },
+      "lockStatus": "restricted",
+      "lockReason": "SOL likely staked for validator rewards; unstaking takes ~2 days on Solana",
+      "mnavPremium": null,
+      "mnavSource": "Data unavailable",
+      "notes": "Formerly Janover. Pivoted to SOL treasury + staking strategy in early 2025."
+    },
+    "UPXI.US": {
+      "name": "Upexi",
+      "symbol": "UPXI.US",
+      "primaryCoin": "SOL",
+      "debt": {
+        "totalDebtUsd": 0,
+        "convertibleNotesUsd": 0,
+        "otherDebtUsd": 0,
+        "hasLeverage": false,
+        "notes": [],
+        "source": "Upexi press releases. Funded via equity raise ($100M+).",
+        "asOfDate": "2025-Q2"
+      },
+      "lockStatus": "restricted",
+      "lockReason": "SOL staked for yield; Solana unstaking period ~2-3 days",
+      "mnavPremium": 2.0,
+      "mnavSource": "Estimated; known to trade at premium post-pivot announcement",
+      "notes": "Consumer products company that pivoted to SOL treasury. Funded by equity raise. High mNAV premium."
+    },
+    "HODL.CN": {
+      "name": "SOL Strategies",
+      "symbol": "HODL.CN",
+      "primaryCoin": "SOL",
+      "debt": {
+        "totalDebtUsd": 25000000,
+        "convertibleNotesUsd": 25000000,
+        "otherDebtUsd": 0,
+        "hasLeverage": true,
+        "notes": [
+          {"title": "Convertible Note", "notional": 25000000, "maturity": "2026", "coupon": null, "strikePrice": null}
+        ],
+        "source": "SOL Strategies press releases. CAD-denominated, converted at ~0.73 USD/CAD.",
+        "asOfDate": "2025-Q1"
+      },
+      "lockStatus": "restricted",
+      "lockReason": "Operates SOL validators; staked SOL subject to unstaking period",
+      "mnavPremium": 1.5,
+      "mnavSource": "Estimated",
+      "notes": "Canadian-listed SOL treasury + validator operator. Previously named Cypherpunk Holdings."
+    },
+    "GLXY.US": {
+      "name": "Galaxy Digital",
+      "symbol": "GLXY.US",
+      "primaryCoin": "BTC",
+      "debt": {
+        "totalDebtUsd": 500000000,
+        "convertibleNotesUsd": 0,
+        "otherDebtUsd": 500000000,
+        "hasLeverage": true,
+        "notes": [
+          {"title": "Credit facility / corporate debt", "notional": 500000000, "maturity": "various", "coupon": null, "strikePrice": null}
+        ],
+        "source": "Galaxy Digital financial reports. Diversified digital asset firm with trading desk.",
+        "asOfDate": "2024-Q4"
+      },
+      "lockStatus": "free",
+      "lockReason": "Trading firm; assets highly liquid",
+      "mnavPremium": 0.9,
+      "mnavSource": "Estimated; recently migrated listing from TSX to NASDAQ",
+      "notes": "Diversified crypto firm (trading, lending, mining, investments). Multi-asset holdings. Not a pure treasury play."
+    },
+    "COIN.US": {
+      "name": "Coinbase Global",
+      "symbol": "COIN.US",
+      "primaryCoin": "BTC",
+      "debt": {
+        "totalDebtUsd": 4300000000,
+        "convertibleNotesUsd": 1300000000,
+        "otherDebtUsd": 3000000000,
+        "hasLeverage": true,
+        "notes": [
+          {"title": "0.50% Convertible Notes due 2026", "notional": 1300000000, "maturity": "2026-06-01", "coupon": 0.5, "strikePrice": null},
+          {"title": "Senior Notes (various)", "notional": 3000000000, "maturity": "2028-2031", "coupon": null, "strikePrice": null}
+        ],
+        "source": "Coinbase 10-K 2024. Large exchange with diversified revenue.",
+        "asOfDate": "2024-Q4"
+      },
+      "lockStatus": "free",
+      "lockReason": "Exchange operator; crypto on balance sheet is corporate treasury, highly liquid",
+      "mnavPremium": null,
+      "mnavSource": "Not applicable - Coinbase is valued as an exchange, not a treasury vehicle",
+      "notes": "Largest US crypto exchange. Holdings are corporate treasury, not primary business model. $4.3B debt offset by substantial revenue ($5B+ annual)."
+    }
+  }
+}
