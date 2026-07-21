@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-07-20T04:57:49.850Z",
-  "dataFetchedAt": "2026-07-20T04:57:49.846Z",
+  "generatedAt": "2026-07-21T04:39:08.302Z",
+  "dataFetchedAt": "2026-07-21T04:39:08.297Z",
   "prices": {
-    "btc": 64513,
-    "eth": 1868.75,
-    "sol": 76.54
+    "btc": 65509,
+    "eth": 1923.15,
+    "sol": 78.1
   },
   "circulatingSupply": {
     "btc": 20999875.55998009,
@@ -13,16 +13,16 @@
   },
   "marketData": {
     "btc": {
-      "marketCap": 1294008446167.1655,
-      "volume24h": 17348458670.315186
+      "marketCap": 1313882990818.3943,
+      "volume24h": 32538022029.438126
     },
     "eth": {
-      "marketCap": 225572679361.0804,
-      "volume24h": 7094941548.530444
+      "marketCap": 232051992937.30527,
+      "volume24h": 11572977408.344898
     },
     "sol": {
-      "marketCap": 44598803968.28131,
-      "volume24h": 1386551183.7879586
+      "marketCap": 45497591486.33028,
+      "volume24h": 1915282417.1101596
     }
   },
   "companies": [
@@ -35,17 +35,17 @@
         "btc": {
           "quantity": 843775,
           "entryValueUsd": 63684761900,
-          "currentValueUsd": 54434456575,
+          "currentValueUsd": 55274856475,
           "avgCost": 75476,
           "percentOfCirculating": 4.018,
-          "unrealizedUsd": -9250305325,
-          "unrealizedPct": -14.525147066617203
+          "unrealizedUsd": -8409905425,
+          "unrealizedPct": -13.205522285229742
         }
       },
-      "totalCurrentValueUsd": 54434456575,
+      "totalCurrentValueUsd": 55274856475,
       "totalEntryValueUsd": 63684761900,
-      "totalUnrealizedPnlUsd": -9250305325,
-      "totalUnrealizedPnlPct": -14.525147066617203,
+      "totalUnrealizedPnlUsd": -8409905425,
+      "totalUnrealizedPnlPct": -13.205522285229742,
       "debt": {
         "totalDebtUsd": 6713750000,
         "convertibleNotesUsd": 6713750000,
@@ -100,12 +100,12 @@
       },
       "bankruptcy": {
         "bankruptcyPrice": 7956.801279962076,
-        "bufferPct": 87.66635983451076,
-        "currentPrice": 64513,
+        "bufferPct": 87.85388071873777,
+        "currentPrice": 65509,
         "coin": "btc"
       },
       "liquidityRisk": {
-        "daysToExit": 313.7568115754373,
+        "daysToExit": 169.87753165540235,
         "level": 3,
         "label": "> 30 days"
       },
@@ -134,7 +134,7 @@
         "btc": {
           "quantity": 198,
           "entryValueUsd": 0,
-          "currentValueUsd": 12773574,
+          "currentValueUsd": 12970782,
           "avgCost": null,
           "percentOfCirculating": 0.001,
           "unrealizedUsd": null,
@@ -143,14 +143,14 @@
         "eth": {
           "quantity": 5770038,
           "entryValueUsd": 0,
-          "currentValueUsd": 10782758512.5,
+          "currentValueUsd": 11096648579.7,
           "avgCost": null,
           "percentOfCirculating": 4.781,
           "unrealizedUsd": null,
           "unrealizedPct": null
         }
       },
-      "totalCurrentValueUsd": 10795532086.5,
+      "totalCurrentValueUsd": 11109619361.7,
       "totalEntryValueUsd": null,
       "totalUnrealizedPnlUsd": null,
       "totalUnrealizedPnlPct": null,
@@ -169,7 +169,7 @@
         "reason": "No leverage / no forced liquidation price"
       },
       "liquidityRisk": {
-        "daysToExit": 151.98711789417857,
+        "daysToExit": 95.83285432100416,
         "level": 3,
         "label": "> 30 days"
       },
@@ -198,14 +198,14 @@
         "btc": {
           "quantity": 43514,
           "entryValueUsd": 0,
-          "currentValueUsd": 2807218682,
+          "currentValueUsd": 2850558626,
           "avgCost": null,
           "percentOfCirculating": 0.207,
           "unrealizedUsd": null,
           "unrealizedPct": null
         }
       },
-      "totalCurrentValueUsd": 2807218682,
+      "totalCurrentValueUsd": 2850558626,
       "totalEntryValueUsd": null,
       "totalUnrealizedPnlUsd": null,
       "totalUnrealizedPnlPct": null,
@@ -224,7 +224,7 @@
         "reason": "No leverage / no forced liquidation price"
       },
       "liquidityRisk": {
-        "daysToExit": 16.18063334288594,
+        "daysToExit": 8.7606896535844,
         "level": 2,
         "label": "7-30 days"
       },
@@ -253,17 +253,17 @@
         "btc": {
           "quantity": 43000,
           "entryValueUsd": 3810765023.48,
-          "currentValueUsd": 2774059000,
+          "currentValueUsd": 2816887000,
           "avgCost": 88622.44240651163,
           "percentOfCirculating": 0.205,
-          "unrealizedUsd": -1036706023.48,
-          "unrealizedPct": -27.204669327348803
+          "unrealizedUsd": -993878023.48,
+          "unrealizedPct": -26.080800504786524
         }
       },
-      "totalCurrentValueUsd": 2774059000,
+      "totalCurrentValueUsd": 2816887000,
       "totalEntryValueUsd": 3810765023.48,
-      "totalUnrealizedPnlUsd": -1036706023.48,
-      "totalUnrealizedPnlPct": -27.204669327348803,
+      "totalUnrealizedPnlUsd": -993878023.48,
+      "totalUnrealizedPnlPct": -26.080800504786524,
       "debt": {
         "totalDebtUsd": 690000000,
         "convertibleNotesUsd": 690000000,
@@ -283,12 +283,12 @@
       },
       "bankruptcy": {
         "bankruptcyPrice": 16046.511627906977,
-        "bufferPct": 75.12670062172434,
-        "currentPrice": 64513,
+        "bufferPct": 75.50487470743413,
+        "currentPrice": 65509,
         "coin": "btc"
       },
       "liquidityRisk": {
-        "daysToExit": 15.989503004644375,
+        "daysToExit": 8.657205844191047,
         "level": 2,
         "label": "7-30 days"
       },
@@ -317,14 +317,14 @@
         "btc": {
           "quantity": 35303,
           "entryValueUsd": 0,
-          "currentValueUsd": 2277502439,
+          "currentValueUsd": 2312664227,
           "avgCost": null,
           "percentOfCirculating": 0.168,
           "unrealizedUsd": null,
           "unrealizedPct": null
         }
       },
-      "totalCurrentValueUsd": 2277502439,
+      "totalCurrentValueUsd": 2312664227,
       "totalEntryValueUsd": null,
       "totalUnrealizedPnlUsd": null,
       "totalUnrealizedPnlPct": null,
@@ -354,12 +354,12 @@
       },
       "bankruptcy": {
         "bankruptcyPrice": 38240.376171996715,
-        "bufferPct": 40.724542073695666,
-        "currentPrice": 64513,
+        "bufferPct": 41.62576718924619,
+        "currentPrice": 65509,
         "coin": "btc"
       },
       "liquidityRisk": {
-        "daysToExit": 13.127381966813033,
+        "daysToExit": 7.107565998080849,
         "level": 2,
         "label": "7-30 days"
       },
@@ -388,35 +388,35 @@
         "btc": {
           "quantity": 25723,
           "entryValueUsd": 2282988000,
-          "currentValueUsd": 1659467899,
+          "currentValueUsd": 1685088007,
           "avgCost": 88752.78933250399,
           "percentOfCirculating": 0.122,
-          "unrealizedUsd": -623520101,
-          "unrealizedPct": -27.31158030616017
+          "unrealizedUsd": -597899993,
+          "unrealizedPct": -26.18936205534151
         },
         "eth": {
           "quantity": 61137,
           "entryValueUsd": 180946000,
-          "currentValueUsd": 114249768.75,
+          "currentValueUsd": 117575621.55000001,
           "avgCost": 2959.680717078038,
           "percentOfCirculating": 0.051,
-          "unrealizedUsd": -66696231.25,
-          "unrealizedPct": -36.85974337647696
+          "unrealizedUsd": -63370378.44999999,
+          "unrealizedPct": -35.02170727730925
         },
         "sol": {
           "quantity": 775289,
           "entryValueUsd": 132044000,
-          "currentValueUsd": 59340620.06,
+          "currentValueUsd": 60550070.9,
           "avgCost": 170.31584351125838,
           "percentOfCirculating": 0.133,
-          "unrealizedUsd": -72703379.94,
-          "unrealizedPct": -55.05996481475871
+          "unrealizedUsd": -71493929.1,
+          "unrealizedPct": -54.14401949350216
         }
       },
-      "totalCurrentValueUsd": 1833058287.81,
+      "totalCurrentValueUsd": 1863213699.45,
       "totalEntryValueUsd": 2595978000,
-      "totalUnrealizedPnlUsd": -762919712.19,
-      "totalUnrealizedPnlPct": -29.388527645072493,
+      "totalUnrealizedPnlUsd": -732764300.55,
+      "totalUnrealizedPnlPct": -28.226907182957632,
       "debt": {
         "totalDebtUsd": 500000000,
         "convertibleNotesUsd": 0,
@@ -436,25 +436,25 @@
       },
       "bankruptcy": {
         "bankruptcyPrice": 19437.85717062551,
-        "bufferPct": 69.86986007374404,
-        "currentPrice": 64513,
+        "bufferPct": 70.32795925655175,
+        "currentPrice": 65509,
         "coin": "btc"
       },
       "liquidityRisk": {
-        "daysToExit": 9.565069436941098,
-        "level": 2,
-        "label": "7-30 days"
+        "daysToExit": 5.178821068142471,
+        "level": 1,
+        "label": "1-7 days"
       },
-      "sellability": "restricted",
+      "sellability": "free",
       "lockStatus": "free",
       "mnavPremium": 0.9,
       "risk": {
-        "total": 6,
+        "total": 5,
         "level": "medium",
         "breakdown": {
           "leverage": 2,
           "concentration": 2,
-          "liquidity": 2,
+          "liquidity": 1,
           "reflexivity": 0
         }
       },
@@ -470,14 +470,14 @@
         "eth": {
           "quantity": 868699,
           "entryValueUsd": 0,
-          "currentValueUsd": 1623381256.25,
+          "currentValueUsd": 1670638481.8500001,
           "avgCost": null,
           "percentOfCirculating": 0.72,
           "unrealizedUsd": null,
           "unrealizedPct": null
         }
       },
-      "totalCurrentValueUsd": 1623381256.25,
+      "totalCurrentValueUsd": 1670638481.8500001,
       "totalEntryValueUsd": null,
       "totalUnrealizedPnlUsd": null,
       "totalUnrealizedPnlPct": null,
@@ -496,7 +496,7 @@
         "reason": "No leverage / no forced liquidation price"
       },
       "liquidityRisk": {
-        "daysToExit": 22.88218159526073,
+        "daysToExit": 14.42796472324827,
         "level": 2,
         "label": "7-30 days"
       },
@@ -525,26 +525,26 @@
         "btc": {
           "quantity": 16492,
           "entryValueUsd": 1156722999,
-          "currentValueUsd": 1063948396,
+          "currentValueUsd": 1080374428,
           "avgCost": 70138.43069366965,
           "percentOfCirculating": 0.079,
-          "unrealizedUsd": -92774603,
-          "unrealizedPct": -8.02046843368764
+          "unrealizedUsd": -76348571,
+          "unrealizedPct": -6.600419552996197
         },
         "eth": {
           "quantity": 150193,
           "entryValueUsd": 357116000,
-          "currentValueUsd": 280673168.75,
+          "currentValueUsd": 288843667.95,
           "avgCost": 2377.7140079764035,
           "percentOfCirculating": 0.124,
-          "unrealizedUsd": -76442831.25,
-          "unrealizedPct": -21.405602451304336
+          "unrealizedUsd": -68272332.05000001,
+          "unrealizedPct": -19.117690624334955
         }
       },
-      "totalCurrentValueUsd": 1344621564.75,
+      "totalCurrentValueUsd": 1369218095.95,
       "totalEntryValueUsd": 1513838999,
-      "totalUnrealizedPnlUsd": -169217434.25,
-      "totalUnrealizedPnlPct": -11.178033751394986,
+      "totalUnrealizedPnlUsd": -144620903.04999995,
+      "totalUnrealizedPnlPct": -9.55325521046376,
       "debt": {
         "totalDebtUsd": 4300000000,
         "convertibleNotesUsd": 1300000000,
@@ -575,7 +575,7 @@
         "reason": "Debt exceeds crypto holdings 3x+ (company has non-crypto revenue)"
       },
       "liquidityRisk": {
-        "daysToExit": 6.132532175641745,
+        "daysToExit": 3.3203404367999707,
         "level": 1,
         "label": "1-7 days"
       },
@@ -604,14 +604,14 @@
         "btc": {
           "quantity": 15680,
           "entryValueUsd": 0,
-          "currentValueUsd": 1011563840,
+          "currentValueUsd": 1027181120,
           "avgCost": null,
           "percentOfCirculating": 0.075,
           "unrealizedUsd": null,
           "unrealizedPct": null
         }
       },
-      "totalCurrentValueUsd": 1011563840,
+      "totalCurrentValueUsd": 1027181120,
       "totalEntryValueUsd": null,
       "totalUnrealizedPnlUsd": null,
       "totalUnrealizedPnlPct": null,
@@ -634,12 +634,12 @@
       },
       "bankruptcy": {
         "bankruptcyPrice": 29336.73469387755,
-        "bufferPct": 54.52585572849262,
-        "currentPrice": 64513,
+        "bufferPct": 55.217245426006265,
+        "currentPrice": 65509,
         "coin": "btc"
       },
       "liquidityRisk": {
-        "daysToExit": 5.830590863088925,
+        "daysToExit": 3.1568601776026886,
         "level": 1,
         "label": "1-7 days"
       },
@@ -668,14 +668,14 @@
         "btc": {
           "quantity": 13470,
           "entryValueUsd": 0,
-          "currentValueUsd": 868990110,
+          "currentValueUsd": 882406230,
           "avgCost": null,
           "percentOfCirculating": 0.064,
           "unrealizedUsd": null,
           "unrealizedPct": null
         }
       },
-      "totalCurrentValueUsd": 868990110,
+      "totalCurrentValueUsd": 882406230,
       "totalEntryValueUsd": null,
       "totalUnrealizedPnlUsd": null,
       "totalUnrealizedPnlPct": null,
@@ -698,12 +698,12 @@
       },
       "bankruptcy": {
         "bankruptcyPrice": 40831.47735708983,
-        "bufferPct": 36.708140441322165,
-        "currentPrice": 64513,
+        "bufferPct": 37.670430998656926,
+        "currentPrice": 65509,
         "coin": "btc"
       },
       "liquidityRisk": {
-        "daysToExit": 5.008804778431621,
+        "daysToExit": 2.7119200632849627,
         "level": 1,
         "label": "1-7 days"
       },
@@ -732,26 +732,26 @@
         "btc": {
           "quantity": 3.9999999999999996,
           "entryValueUsd": 348410,
-          "currentValueUsd": 258051.99999999997,
+          "currentValueUsd": 262035.99999999997,
           "avgCost": 87102.50000000001,
           "percentOfCirculating": 0,
-          "unrealizedUsd": -90358.00000000003,
-          "unrealizedPct": -25.93438764673805
+          "unrealizedUsd": -86374.00000000003,
+          "unrealizedPct": -24.790907264429844
         },
         "eth": {
           "quantity": 158461.75,
           "entryValueUsd": 450300476,
-          "currentValueUsd": 296125395.3125,
+          "currentValueUsd": 304745714.5125,
           "avgCost": 2841.6982394805054,
           "percentOfCirculating": 0.131,
-          "unrealizedUsd": -154175080.6875,
-          "unrealizedPct": -34.23826731364592
+          "unrealizedUsd": -145554761.4875,
+          "unrealizedPct": -32.32391908186658
         }
       },
-      "totalCurrentValueUsd": 296383447.3125,
+      "totalCurrentValueUsd": 305007750.5125,
       "totalEntryValueUsd": 450648886,
-      "totalUnrealizedPnlUsd": -154265438.6875,
-      "totalUnrealizedPnlPct": -34.23184733835112,
+      "totalUnrealizedPnlUsd": -145641135.4875,
+      "totalUnrealizedPnlPct": -32.31809508733591,
       "debt": {
         "totalDebtUsd": 0,
         "convertibleNotesUsd": 0,
@@ -767,7 +767,7 @@
         "reason": "No leverage / no forced liquidation price"
       },
       "liquidityRisk": {
-        "daysToExit": 4.174001051460641,
+        "daysToExit": 2.6318443315627005,
         "level": 1,
         "label": "1-7 days"
       },
@@ -796,14 +796,14 @@
         "sol": {
           "quantity": 2223074,
           "entryValueUsd": 0,
-          "currentValueUsd": 170154083.96,
+          "currentValueUsd": 173622079.39999998,
           "avgCost": null,
-          "percentOfCirculating": 0.382,
+          "percentOfCirculating": 0.381,
           "unrealizedUsd": null,
           "unrealizedPct": null
         }
       },
-      "totalCurrentValueUsd": 170154083.96,
+      "totalCurrentValueUsd": 173622079.39999998,
       "totalEntryValueUsd": null,
       "totalUnrealizedPnlUsd": null,
       "totalUnrealizedPnlPct": null,
@@ -822,7 +822,7 @@
         "reason": "No leverage / no forced liquidation price"
       },
       "liquidityRisk": {
-        "daysToExit": 12.293786683500493,
+        "daysToExit": 9.064581608117937,
         "level": 2,
         "label": "7-30 days"
       },
@@ -851,17 +851,17 @@
         "sol": {
           "quantity": 2173204,
           "entryValueUsd": 325341218,
-          "currentValueUsd": 166337034.16000003,
+          "currentValueUsd": 169727232.39999998,
           "avgCost": 149.7057883199184,
           "percentOfCirculating": 0.373,
-          "unrealizedUsd": -159004183.83999997,
-          "unrealizedPct": -48.87305236559358
+          "unrealizedUsd": -155613985.60000002,
+          "unrealizedPct": -47.83100848906271
         }
       },
-      "totalCurrentValueUsd": 166337034.16000003,
+      "totalCurrentValueUsd": 169727232.39999998,
       "totalEntryValueUsd": 325341218,
-      "totalUnrealizedPnlUsd": -159004183.83999997,
-      "totalUnrealizedPnlPct": -48.87305236559358,
+      "totalUnrealizedPnlUsd": -155613985.60000002,
+      "totalUnrealizedPnlPct": -47.83100848906271,
       "debt": {
         "totalDebtUsd": 0,
         "convertibleNotesUsd": 0,
@@ -877,7 +877,7 @@
         "reason": "No leverage / no forced liquidation price"
       },
       "liquidityRisk": {
-        "daysToExit": 12.018001378150258,
+        "daysToExit": 8.861236742046524,
         "level": 2,
         "label": "7-30 days"
       },
@@ -906,14 +906,14 @@
         "sol": {
           "quantity": 533040,
           "entryValueUsd": 0,
-          "currentValueUsd": 40798881.6,
+          "currentValueUsd": 41630424,
           "avgCost": null,
           "percentOfCirculating": 0.091,
           "unrealizedUsd": null,
           "unrealizedPct": null
         }
       },
-      "totalCurrentValueUsd": 40798881.6,
+      "totalCurrentValueUsd": 41630424,
       "totalEntryValueUsd": null,
       "totalUnrealizedPnlUsd": null,
       "totalUnrealizedPnlPct": null,
@@ -936,12 +936,12 @@
       },
       "bankruptcy": {
         "bankruptcyPrice": 46.90079543749062,
-        "bufferPct": 38.723810507589995,
-        "currentPrice": 76.54,
+        "bufferPct": 39.947765124851955,
+        "currentPrice": 78.1,
         "coin": "sol"
       },
       "liquidityRisk": {
-        "daysToExit": 2.947756149265883,
+        "daysToExit": 2.17346997013648,
         "level": 1,
         "label": "1-7 days"
       },
