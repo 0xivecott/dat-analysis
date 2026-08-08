@@ -8,7 +8,7 @@
         "btc": {
           "quantity": 842137,
           "entryValueUsd": 63789523466,
-          "currentValueUsd": 54083035833.51716,
+          "currentValueUsd": 54644054568.2478,
           "percentOfCirculating": 4.01
         }
       }
@@ -21,7 +21,7 @@
         "btc": {
           "quantity": 43514,
           "entryValueUsd": 0,
-          "currentValueUsd": 2794520631.7495437,
+          "currentValueUsd": 2823508990.2031794,
           "percentOfCirculating": 0.207
         }
       }
@@ -34,7 +34,7 @@
         "btc": {
           "quantity": 43000,
           "entryValueUsd": 3810765023.48,
-          "currentValueUsd": 2761510942.805313,
+          "currentValueUsd": 2790156882.3536496,
           "percentOfCirculating": 0.205
         }
       }
@@ -47,7 +47,7 @@
         "btc": {
           "quantity": 35303,
           "entryValueUsd": 0,
-          "currentValueUsd": 2267200484.043162,
+          "currentValueUsd": 2290718800.4123464,
           "percentOfCirculating": 0.168
         }
       }
@@ -60,19 +60,19 @@
         "btc": {
           "quantity": 25723,
           "entryValueUsd": 2282988000,
-          "currentValueUsd": 1651961534.4600248,
+          "currentValueUsd": 1669097801.9716961,
           "percentOfCirculating": 0.122
         },
         "eth": {
           "quantity": 61137,
           "entryValueUsd": 180946000,
-          "currentValueUsd": 115896109.15495357,
+          "currentValueUsd": 116896106.44399308,
           "percentOfCirculating": 0.051
         },
         "sol": {
           "quantity": 775289,
           "entryValueUsd": 132044000,
-          "currentValueUsd": 56229659.18850179,
+          "currentValueUsd": 57237029.72334484,
           "percentOfCirculating": 0.133
         }
       }
@@ -85,13 +85,13 @@
         "btc": {
           "quantity": 16492,
           "entryValueUsd": 1156722999,
-          "currentValueUsd": 1059135778.3429121,
+          "currentValueUsd": 1070122495.4366603,
           "percentOfCirculating": 0.079
         },
         "eth": {
           "quantity": 150193,
           "entryValueUsd": 357116000,
-          "currentValueUsd": 284717672.15123314,
+          "currentValueUsd": 287174328.39594114,
           "percentOfCirculating": 0.124
         }
       }
@@ -104,7 +104,7 @@
         "btc": {
           "quantity": 15680,
           "entryValueUsd": 0,
-          "currentValueUsd": 1006988176.3531932,
+          "currentValueUsd": 1017433951.5187262,
           "percentOfCirculating": 0.075
         }
       }
@@ -117,7 +117,7 @@
         "btc": {
           "quantity": 13470,
           "entryValueUsd": 0,
-          "currentValueUsd": 865059358.1299434,
+          "currentValueUsd": 874032865.23962,
           "percentOfCirculating": 0.064
         }
       }
@@ -130,13 +130,13 @@
         "btc": {
           "quantity": 198,
           "entryValueUsd": 0,
-          "currentValueUsd": 12715794.57384772,
+          "currentValueUsd": 12847699.1326982,
           "percentOfCirculating": 0.001
         },
         "eth": {
           "quantity": 5797813,
           "entryValueUsd": 0,
-          "currentValueUsd": 10990790655.54425,
+          "currentValueUsd": 11085623527.32988,
           "percentOfCirculating": 4.804
         }
       }
@@ -149,13 +149,13 @@
         "btc": {
           "quantity": 3.9999999999999996,
           "entryValueUsd": 348410,
-          "currentValueUsd": 256884.73886561047,
+          "currentValueUsd": 259549.47742824646,
           "percentOfCirculating": 0
         },
         "eth": {
           "quantity": 158461.75,
           "entryValueUsd": 450300476,
-          "currentValueUsd": 300392565.46583843,
+          "currentValueUsd": 302984470.8654566,
           "percentOfCirculating": 0.131
         }
       }
@@ -181,7 +181,7 @@
         "eth": {
           "quantity": 868699,
           "entryValueUsd": 0,
-          "currentValueUsd": 1646774197.7329443,
+          "currentValueUsd": 1660983214.28579,
           "percentOfCirculating": 0.72
         }
       }
@@ -194,7 +194,7 @@
         "sol": {
           "quantity": 2223074,
           "entryValueUsd": 0,
-          "currentValueUsd": 161233673.34093407,
+          "currentValueUsd": 164122221.02363777,
           "percentOfCirculating": 0.382
         }
       }
@@ -207,7 +207,7 @@
         "sol": {
           "quantity": 2173204,
           "entryValueUsd": 325341218,
-          "currentValueUsd": 157616734.2334134,
+          "currentValueUsd": 160440483.4105629,
           "percentOfCirculating": 0.373
         }
       }
@@ -220,29 +220,29 @@
         "sol": {
           "quantity": 533040,
           "entryValueUsd": 0,
-          "currentValueUsd": 38659980.38646104,
+          "currentValueUsd": 39352585.066641904,
           "percentOfCirculating": 0.092
         }
       }
     }
   },
   "prices": {
-    "btc": 64221,
-    "eth": 1895.66,
-    "sol": 72.51
+    "btc": 64887,
+    "eth": 1912.3,
+    "sol": 73.84
   },
   "marketData": {
     "btc": {
-      "marketCap": 1288578712570.706,
-      "volume24h": 18398735262.51815
+      "marketCap": 1302102945623.364,
+      "volume24h": 21424302250.21889
     },
     "eth": {
-      "marketCap": 228745155617.30203,
-      "volume24h": 6832812810.069357
+      "marketCap": 230757490235.88925,
+      "volume24h": 7709314344.409323
     },
     "sol": {
-      "marketCap": 42191720757.324135,
-      "volume24h": 1387437809.8772478
+      "marketCap": 42971497269.81294,
+      "volume24h": 1470575789.3008428
     }
   },
   "circulatingSupply": {
@@ -250,5 +250,5 @@
     "eth": 120687198.16819318,
     "sol": 582112567.4633771
   },
-  "fetchedAt": "2026-08-07T04:05:44.303Z"
+  "fetchedAt": "2026-08-08T03:02:47.579Z"
 }
