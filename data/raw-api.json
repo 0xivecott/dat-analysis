@@ -6,10 +6,10 @@
       "country": "US",
       "holdings": {
         "btc": {
-          "quantity": 850363,
-          "entryValueUsd": 64164427909,
-          "currentValueUsd": 55071979943.17447,
-          "percentOfCirculating": 4.049
+          "quantity": 850848,
+          "entryValueUsd": 64197838104,
+          "currentValueUsd": 54618591483.90329,
+          "percentOfCirculating": 4.052
         }
       }
     },
@@ -21,7 +21,7 @@
         "btc": {
           "quantity": 44000,
           "entryValueUsd": 3896249023.48,
-          "currentValueUsd": 2849567910.9976287,
+          "currentValueUsd": 2824497472.2767696,
           "percentOfCirculating": 0.21
         }
       }
@@ -34,21 +34,8 @@
         "btc": {
           "quantity": 43514,
           "entryValueUsd": 0,
-          "currentValueUsd": 2818093138.162519,
+          "currentValueUsd": 2793299613.8329854,
           "percentOfCirculating": 0.207
-        }
-      }
-    },
-    "MARA.US": {
-      "name": "MARA Holdings",
-      "symbol": "MARA.US",
-      "country": "US",
-      "holdings": {
-        "btc": {
-          "quantity": 35577,
-          "entryValueUsd": 0,
-          "currentValueUsd": 2304069944.7627873,
-          "percentOfCirculating": 0.169
         }
       }
     },
@@ -60,20 +47,33 @@
         "btc": {
           "quantity": 21084,
           "entryValueUsd": 1307858000,
-          "currentValueUsd": 1365461132.6244092,
+          "currentValueUsd": 1353447834.215532,
           "percentOfCirculating": 0.1
         },
         "eth": {
           "quantity": 97764,
           "entryValueUsd": 158183000,
-          "currentValueUsd": 177646280.59124607,
+          "currentValueUsd": 177081206.4752192,
           "percentOfCirculating": 0.08
         },
         "sol": {
           "quantity": 760835,
           "entryValueUsd": 96870000,
-          "currentValueUsd": 54061323.38130521,
+          "currentValueUsd": 54871223.47871385,
           "percentOfCirculating": 0.129
+        }
+      }
+    },
+    "MARA.US": {
+      "name": "MARA Holdings",
+      "symbol": "MARA.US",
+      "country": "US",
+      "holdings": {
+        "btc": {
+          "quantity": 20415,
+          "entryValueUsd": 0,
+          "currentValueUsd": 1310502634.012051,
+          "percentOfCirculating": 0.097
         }
       }
     },
@@ -85,13 +85,13 @@
         "btc": {
           "quantity": 17954,
           "entryValueUsd": 1258890000,
-          "currentValueUsd": 1162753233.501169,
+          "currentValueUsd": 1152523354.937662,
           "percentOfCirculating": 0.085
         },
         "eth": {
           "quantity": 152649,
           "entryValueUsd": 346292000,
-          "currentValueUsd": 277377430.1989804,
+          "currentValueUsd": 276495121.7957094,
           "percentOfCirculating": 0.125
         }
       }
@@ -104,7 +104,7 @@
         "btc": {
           "quantity": 13470,
           "entryValueUsd": 0,
-          "currentValueUsd": 872356358.2076832,
+          "currentValueUsd": 864681385.2629111,
           "percentOfCirculating": 0.064
         }
       }
@@ -117,7 +117,7 @@
         "btc": {
           "quantity": 2418,
           "entryValueUsd": 0,
-          "currentValueUsd": 156596709.29073334,
+          "currentValueUsd": 155218974.72648248,
           "percentOfCirculating": 0.012
         }
       }
@@ -130,14 +130,14 @@
         "btc": {
           "quantity": 198,
           "entryValueUsd": 0,
-          "currentValueUsd": 12823055.59948933,
+          "currentValueUsd": 12710238.625245463,
           "percentOfCirculating": 0.001
         },
         "eth": {
-          "quantity": 6070092,
+          "quantity": 6077745,
           "entryValueUsd": 0,
-          "currentValueUsd": 11029921716.037374,
-          "percentOfCirculating": 4.966
+          "currentValueUsd": 11008698674.857115,
+          "percentOfCirculating": 4.972
         }
       }
     },
@@ -149,13 +149,13 @@
         "btc": {
           "quantity": 3.9999999999999996,
           "entryValueUsd": 348410,
-          "currentValueUsd": 259051.6282725117,
+          "currentValueUsd": 256772.4974797063,
           "percentOfCirculating": 0
         },
         "eth": {
           "quantity": 158461.75,
           "entryValueUsd": 450300476,
-          "currentValueUsd": 287939737.5667923,
+          "currentValueUsd": 287023831.5757801,
           "percentOfCirculating": 0.13
         }
       }
@@ -181,7 +181,7 @@
         "eth": {
           "quantity": 888938,
           "entryValueUsd": 0,
-          "currentValueUsd": 1615283022.1371987,
+          "currentValueUsd": 1610144976.9001718,
           "percentOfCirculating": 0.727
         }
       }
@@ -194,7 +194,7 @@
         "sol": {
           "quantity": 2600948,
           "entryValueUsd": 0,
-          "currentValueUsd": 184811018.0603666,
+          "currentValueUsd": 187579697.25960797,
           "percentOfCirculating": 0.44
         }
       }
@@ -207,7 +207,7 @@
         "sol": {
           "quantity": 2173204,
           "entryValueUsd": 325341218,
-          "currentValueUsd": 154417559.94078347,
+          "currentValueUsd": 156730910.57697773,
           "percentOfCirculating": 0.367
         }
       }
@@ -220,35 +220,35 @@
         "sol": {
           "quantity": 533040,
           "entryValueUsd": 0,
-          "currentValueUsd": 37875292.03463422,
+          "currentValueUsd": 38442706.977325745,
           "percentOfCirculating": 0.09
         }
       }
     }
   },
   "prices": {
-    "btc": 64757,
-    "eth": 1814.72,
-    "sol": 71.07
+    "btc": 64158,
+    "eth": 1808.67,
+    "sol": 72.11
   },
   "marketData": {
     "btc": {
-      "marketCap": 1302557698144.0215,
-      "volume24h": 30965475577.507164
+      "marketCap": 1291396940240.919,
+      "volume24h": 33140916374.48968
     },
     "eth": {
-      "marketCap": 221866535888.75446,
-      "volume24h": 11265831154.240103
+      "marketCap": 221354516569.20123,
+      "volume24h": 10589741502.72031
     },
     "sol": {
-      "marketCap": 42053022843.2971,
-      "volume24h": 3058145805.8683124
+      "marketCap": 42672128042.043,
+      "volume24h": 2708874727.901623
     }
   },
   "circulatingSupply": {
-    "btc": 21001802.914299823,
-    "eth": 122233024.56705597,
+    "btc": 20998223.099703852,
+    "eth": 122239440.86886562,
     "sol": 591692789.968652
   },
-  "fetchedAt": "2026-11-16T08:06:09.633Z"
+  "fetchedAt": "2026-11-17T09:20:47.365Z"
 }
